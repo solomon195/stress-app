@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>問題解決型 | 性格タイプ | 性格診断テスト</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand:#4f46e5; --text:#374151; --bg:#f8f9fb; --card:#fff; --muted:#6b7280; --purple:#8b5cf6; }
+    * { box-sizing:border-box; }
+    body { font-family:'Noto Sans JP',sans-serif; margin:0; color:var(--text); background:var(--bg); }
+    header { background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:50; }
+    .navbar { display:flex; justify-content:space-between; align-items:center; padding:16px 32px; max-width:1200px; margin:0 auto; }
+    .logo { font-weight:700; font-size:20px; color:var(--brand); text-decoration:none; }
+    .nav-links { display:flex; gap:24px; align-items:center; }
+    .nav-links a { text-decoration:none; color:#1f2937; font-size:14px; }
+    .nav-links a.active { color:var(--brand); font-weight:700; }
+    .nav-links a:hover { color:var(--brand); }
+    .nav-actions { display:flex; gap:16px; align-items:center; }
+
+    .wrap { max-width:960px; margin:24px auto 40px; padding:0 20px; }
+    .breadcrumbs { font-size:12px; color:var(--muted); margin-bottom:12px; }
+    .breadcrumbs a { color:var(--muted); text-decoration:none; }
+    .breadcrumbs a:hover { text-decoration:underline; }
+
+    .hero {
+      background:linear-gradient(135deg, #ede9fe 0%, #ffffff 60%);
+      border:1px solid #e5e7eb; border-radius:14px; padding:24px 22px; box-shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+    .badge { display:inline-block; font-size:12px; font-weight:700; color:#fff; background:var(--purple); padding:6px 10px; border-radius:999px; }
+    h1 { margin:8px 0 6px; font-size:28px; color:#111827; }
+    .lead { margin:0; color:#4b5563; }
+
+    .grid { display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px; }
+    @media (min-width: 900px){ .grid { grid-template-columns: 1.35fr .65fr; } }
+
+    .card { background:var(--card); border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.05); padding:18px; }
+    .card h2 { margin:0 0 10px; font-size:20px; color:#111827; }
+    .card h3 { margin:14px 0 8px; font-size:16px; color:#111827; }
+    p { line-height:1.95; font-size:15px; margin:0 0 12px; }
+    ul { margin:0 0 12px 18px; }
+    .tip { background:#f5f3ff; border:1px dashed #c4b5fd; border-radius:10px; padding:12px 14px; font-size:14px; color:#4338ca; }
+    .btn-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .btn { display:inline-block; padding:10px 14px; font-size:14px; border-radius:10px; text-decoration:none; }
+    .btn-outline { color:var(--brand); border:1px solid #c7d2fe; background:#fff; }
+    .btn-primary { color:#fff; background:var(--brand); }
+
+    footer { text-align:center; padding:30px; font-size:12px; color:#888; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a class="logo" href="index.html">16Personalities</a>
+      <div class="nav-links">
+        <a href="index.html#">性格診断テスト</a>
+        <a class="active" href="#">性格タイプ</a>
+        <a href="#">キャリアキット</a>
+        <a href="#">ビジネス</a>
+        <a href="kiji.html">記事</a>
+      </div>
+      <div class="nav-actions" id="nav-actions">
+        <a href="Login.html">ログイン</a>
+        <span>🇯🇵</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="breadcrumbs"><a href="index.html">トップ</a> / <a href="index.html#">性格タイプ</a> / <span>問題解決型</span></div>
+
+    <section class="hero">
+      <span class="badge">問題解決型</span>
+      <h1>課題に一直線。原因を見つけて、具体策で動く。</h1>
+      <p class="lead">「問題は分解すれば解ける」を信条とする実践派。事実を集め、因果を見抜き、最短距離の打ち手で前進します。</p>
+      <div class="btn-row">
+        <a class="btn btn-outline" href="index.html">← 戻る</a>
+        <a class="btn btn-primary" href="monshosai.html">タイプ診断を試す</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>特徴</h2>
+        <p>現状のズレ（課題）を発見 → 原因を仮説化 → 小さく検証 → 解決策を実装、という流れを好みます。感情よりも事実・ロジックを優先し、成果で評価される環境で力を発揮します。</p>
+        <h3>得意なこと</h3>
+        <ul>
+          <li>課題の切り分けと優先順位付け</li>
+          <li>データや根拠に基づく意思決定</li>
+          <li>プロジェクトの推進・改善の継続</li>
+        </ul>
+        <h3>つまずきやすい点</h3>
+        <ul>
+          <li>スピード重視で周囲の感情を置き去りにしがち</li>
+          <li>完璧主義で手数が遅れることがある</li>
+        </ul>
+        <div class="tip">コツ：<strong>「なぜ？」を3回</strong>、<strong>今できる最小アクション</strong>を1つ決める。これだけで前に進めます。</div>
+      </article>
+
+      <aside class="card">
+        <h2>関連タイプ</h2>
+        <ul>
+          <li><a href="jodoshosai.html">情動焦点型</a></li>
+          <li><a href="kaihishosai.html">回避型</a></li>
+          <li><a href="shakai.html">社会支援型</a></li>
+          <li><a href="imishosai.html">意味付け型</a></li>
+          <li><a href="baku.html">爆発型</a></li>
+        </ul>
+        <h3>おすすめ記事</h3>
+        <ul>
+          <li><a href="stress.html">ストレスって何？基礎からサクッと理解</a></li>
+          <li><a href="kiji.html">記事一覧へ</a></li>
+        </ul>
+      </aside>
+    </section>
+  </main>
+
+  <footer>© 2025 性格診断 by あなたの名前</footer>
+
+  <!-- Firebase（ログイン状態の表示用：任意） -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxv-uF7qfCohDrM7M6GHYIg8dgXRDFuw",
+      authDomain: "new-stress.firebaseapp.com",
+      projectId: "new-stress",
+      storageBucket: "new-stress.appspot.com",
+      messagingSenderId: "69761646862",
+      appId: "1:69761646862:web:3eaec69feb21efc14c575f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const navActions = document.getElementById('nav-actions');
+    function renderLoggedOut(){
+      navActions.innerHTML=''; 
+      const a=document.createElement('a'); a.href='Login.html'; a.textContent='ログイン';
+      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px';
+      navActions.appendChild(a); navActions.appendChild(l);
+    }
+    function renderLoggedIn(user){
+      navActions.innerHTML='';
+      const n=document.createElement('span'); n.textContent=(user.displayName||user.email)+' さん'; n.style.marginRight='12px';
+      const lo=document.createElement('a'); lo.href='#'; lo.textContent='ログアウト';
+      lo.addEventListener('click', async (e)=>{ e.preventDefault(); await auth.signOut(); });
+      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px';
+      navActions.appendChild(n); navActions.appendChild(lo); navActions.appendChild(l);
+    }
+    auth.onAuthStateChanged(u=>u?renderLoggedIn(u):renderLoggedOut());
+  </script>
+</body>
+</html>

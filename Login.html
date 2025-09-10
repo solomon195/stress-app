@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規登録 | 性格診断テスト</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --brand:#4f46e5; --text:#374151; --bg:#f4f5f7; --card:#fff; --muted:#6b7280; }
+    * { box-sizing: border-box; }
+    body { font-family:'Noto Sans JP',sans-serif; background:var(--bg); margin:0; color:var(--text); }
+    header { background:#ffffff; border-bottom:1px solid #e5e7eb; }
+    .navbar { display:flex; justify-content:space-between; align-items:center; padding:16px 32px; max-width:1200px; margin:0 auto; }
+    .logo { font-weight:700; font-size:20px; color:var(--brand); text-decoration:none; }
+    .nav-actions { display:flex; gap:16px; align-items:center; }
+    .nav-actions a { color:var(--text); text-decoration:none; font-size:14px; }
+    .nav-actions a:hover { color:var(--brand); }
+
+    .register-container { max-width:460px; margin:64px auto; background:var(--card); padding:32px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.08); }
+    .register-container h1 { margin:0 0 8px; font-size:22px; text-align:center; }
+    .register-container p.desc { margin:0 0 20px; text-align:center; color:var(--muted); font-size:13px; }
+    .grid { display:grid; gap:12px; }
+    .label { font-size:13px; margin-bottom:6px; display:block; color:#111827; }
+    input[type="text"], input[type="email"], input[type="password"] { width:100%; padding:12px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; }
+    .row { margin-bottom:4px; }
+    .hint { font-size:12px; color:var(--muted); margin-top:4px; }
+    .agree { display:flex; align-items:center; gap:8px; font-size:13px; color:#111827; }
+    .btn { width:100%; padding:12px; border:none; border-radius:8px; background:var(--brand); color:#fff; font-size:14px; cursor:pointer; margin-top:8px; }
+    .btn:disabled { opacity:.7; cursor:not-allowed; }
+    .links { margin-top:12px; text-align:center; font-size:13px; }
+    .links a { color:var(--brand); text-decoration:none; }
+    .error { margin-top:12px; color:#dc2626; font-size:13px; display:none; }
+    .success { margin-top:12px; color:#059669; font-size:13px; display:none; }
+    footer { text-align:center; padding:30px; font-size:12px; color:#888; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">16Personalities</a>
+      <div class="nav-actions">
+        <a href="Login.html">ログインに戻る</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="register-container">
+      <h1>新規登録</h1>
+      <p class="desc">お名前・メール・パスワードを入力してください。</p>
+      <div class="grid">
+        <div class="row">
+          <label class="label" for="name">お名前</label>
+          <input id="name" type="text" placeholder="山田 太郎" autocomplete="name" />
+        </div>
+        <div class="row">
+          <label class="label" for="email">メールアドレス</label>
+          <input id="email" type="email" placeholder="your@example.com" autocomplete="email" />
+        </div>
+        <div class="row">
+          <label class="label" for="password">パスワード</label>
+          <input id="password" type="password" placeholder="8文字以上" autocomplete="new-password" />
+          <div class="hint">英数字を含む8文字以上を推奨</div>
+        </div>
+        <div class="row">
+          <label class="label" for="password2">パスワード（確認）</label>
+          <input id="password2" type="password" placeholder="同じパスワード" autocomplete="new-password" />
+        </div>
+        <label class="agree"><input type="checkbox" id="agree" /> 利用規約とプライバシーポリシーに同意します</label>
+        <button id="registerBtn" class="btn">登録する</button>
+      </div>
+      <div class="links">すでにアカウントをお持ちですか？ <a href="Login.html">ログイン</a></div>
+      <div id="err" class="error"></div>
+      <div id="ok" class="success"></div>
+    </div>
+  </main>
+
+  <footer>© 2025 性格診断 by あなたの名前</footer>
+
+  <!-- Firebase SDK（compat版） -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+  <script>
+    // Login.html と同じFirebaseプロジェクト設定を使用
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxv-uF7qfCohDrM7M6GHYIg8dgXRDFuw",
+      authDomain: "new-stress.firebaseapp.com",
+      projectId: "new-stress",
+      storageBucket: "new-stress.appspot.com",
+      messagingSenderId: "69761646862",
+      appId: "1:69761646862:web:3eaec69feb21efc14c575f",
+      measurementId: "G-L74HC3H5E"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
+
+  <script>
+    const nameEl  = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const passEl  = document.getElementById('password');
+    const pass2El = document.getElementById('password2');
+    const agreeEl = document.getElementById('agree');
+    const btn     = document.getElementById('registerBtn');
+    const errBox  = document.getElementById('err');
+    const okBox   = document.getElementById('ok');
+
+    function showErr(msg){ errBox.textContent = msg; errBox.style.display = 'block'; okBox.style.display='none'; }
+    function showOk(msg){ okBox.textContent = msg; okBox.style.display = 'block'; errBox.style.display='none'; }
+
+    async function handleRegister(){
+      btn.disabled = true; btn.textContent = '登録中...';
+      try {
+        const name = nameEl.value.trim();
+        const email= emailEl.value.trim();
+        const pass = passEl.value;
+        const pass2= pass2El.value;
+        if (!name || !email || !pass || !pass2) throw new Error('全ての項目を入力してください');
+        if (pass.length < 8) throw new Error('パスワードは8文字以上にしてください');
+        if (pass !== pass2) throw new Error('パスワードが一致しません');
+        if (!agreeEl.checked) throw new Error('利用規約への同意が必要です');
+
+        // Firebaseでユーザー作成
+        const cred = await auth.createUserWithEmailAndPassword(email, pass);
+        await cred.user.updateProfile({ displayName: name });
+
+        // （任意）メール認証を送信
+        try { await cred.user.sendEmailVerification(); } catch(_) {}
+
+        showOk('登録完了！確認メールを送信しました。ログインページへ移動します');
+        setTimeout(()=> location.href = 'Login.html', 800);
+      } catch(e) {
+        showErr(e.message || '登録に失敗しました');
+      } finally {
+        btn.disabled = false; btn.textContent = '登録する';
+      }
+    }
+
+    btn.addEventListener('click', handleRegister);
+    [nameEl,emailEl,passEl,pass2El].forEach(el => el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') handleRegister(); }));
+
+    // すでにログイン済みならトップへ
+    auth.onAuthStateChanged(user => { if (user) location.href = 'index.html'; });
+  </script>
+</body>
+</html>

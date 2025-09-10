@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>結果｜行動型（ストレス対処）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f5f7; --text:#111827; --muted:#6b7280; --card:#fff; --brand:#4f46e5;
+      --line:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,-apple-system}
+
+    /* ===== Top visual ===== */
+    .top-hero{
+      background: radial-gradient(1200px 400px at 50% -100px, #fff7e6 10%, #fffaf0 40%, #fffdf7 75%);
+      border-bottom:1px solid var(--line);
+    }
+    .top-hero .inner{
+      max-width:1060px;margin:0 auto;padding:28px 16px 18px;
+      display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;
+    }
+    .top-hero img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 18px rgba(79,70,229,.25))}
+    .top-hero h1{
+      margin:0;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.15;font-weight:800;letter-spacing:.02em;color:#1f2937;
+    }
+    .top-hero .sub{margin-top:6px;color:var(--muted);font-weight:600}
+
+    .wrap{max-width:960px;margin:0 auto;padding:24px 16px}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .brand{font-weight:700;color:var(--brand)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-weight:600;cursor:pointer}
+    .btn.secondary{background:#e5e7eb;color:#111827}
+
+    .hero{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr;gap:14px}
+    .title{display:flex;align-items:center;gap:10px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.85rem}
+    .lead{color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .card{background:var(--card);border-radius:16px;padding:18px 18px;box-shadow:0 10px 25px rgba(0,0,0,.05)}
+    h2{font-size:1.05rem;margin:0 0 10px}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .kpi{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+    .kpi .val{font-size:1.1rem;font-weight:700}
+    .kpi small{color:var(--muted)}
+
+    .bars{display:grid;gap:10px}
+    .bar{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:10px}
+    .bar .lab{color:var(--muted)}
+    .bar .track{height:12px;background:#eef2ff;border-radius:999px;overflow:hidden}
+    .bar .fill{height:100%;background:var(--brand);width:0}
+
+    .list{display:grid;gap:8px;color:#111827}
+    .list li{line-height:1.7}
+
+    footer{margin-top:18px;color:var(--muted);font-size:.8rem;text-align:center}
+
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .top-hero .inner{grid-template-columns:84px 1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== TOP IMAGE & TITLE ===== -->
+  <section class="top-hero">
+    <div class="inner">
+      <!-- 透過PNG想定：/kekkagazo/kodo2.png -->
+      <img src="kekkagazo/kodo2.png" alt="行動タイプのキャラクター">
+      <div>
+        <h1>あなたは行動タイプ</h1>
+        <div class="sub">動いて整える、エネルギッシュなスイッチャー</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">ストレス診断</div>
+      <div class="actions">
+        <button class="btn" id="retryBtn">もう一度診断</button>
+        <button class="btn secondary" id="shareBtn">結果をシェア</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="title">
+        <span class="badge">あなたのタイプ</span>
+        <h2 style="margin:0">行動型（ACTION）</h2>
+      </div>
+      <p class="lead">まず<b>動いて整える</b>タイプ。短時間のアクションや環境切り替えで気分と状況を変えるのが得意。診断上は主に<b>気晴らし型</b>コーピングが強く出やすいタイプです。</p>
+      <div class="kpis" id="kpiBox" hidden>
+        <div class="kpi"><div class="val" id="kpiThought">--</div><small>思考型</small></div>
+        <div class="kpi"><div class="val" id="kpiEmotion">--</div><small>感情型</small></div>
+        <div class="kpi"><div class="val" id="kpiAction">--</div><small>行動型スコア</small></div>
+        <div class="kpi"><div class="val" id="kpiAvoid">--</div><small>回避型</small></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>このタイプの強み</h2>
+        <ul class="list">
+          <li><b>行動開始</b>が早く、停滞から抜け出すのが得意。</li>
+          <li><b>環境スイッチ</b>（場所・姿勢・タスク切替）で気分を立て直せる。</li>
+          <li>身体を動かす<b>行動活性化</b>で集中・動機づけを回復できる。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>つまずきやすい点</h2>
+        <ul class="list">
+          <li>気晴らしが<b>逃避</b>に傾くと、根本課題が後回しに。</li>
+          <li>衝動的に<b>やりすぎ</b>て疲弊したり、継続性が落ちやすい。</li>
+          <li>短期の切替ばかりで<b>計画</b>や<b>再評価</b>が不足しやすい。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>おすすめコーピング（即効）</h2>
+        <ul class="list">
+          <li><b>2分ルール</b>（2分で出来る行動を今すぐ着手）。</li>
+          <li><b>5〜15分ウォーク</b> or スクワット/ストレッチでスイッチ。</li>
+          <li><b>環境チェンジ</b>（席替え/カフェ/図書館）で再集中。</li>
+          <li><b>25-5</b>（25分集中＋5分休憩のポモドーロを1セット）。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>整えるコーピング（継続）</h2>
+        <ul class="list">
+          <li>行動を<b>習慣連結</b>（歯磨き→ストレッチ→1分計画）。</li>
+          <li><b>ウィークリープラン</b>で気晴らしと課題対応の<b>比率</b>を決める。</li>
+          <li>デジタル<b>通知ダイエット</b>（アプリの通知を必要最小限）。</li>
+          <li>週1回は<b>振り返り</b>（何が効いた/効かなかった？次は？）。</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" id="scoreSection" hidden>
+      <h2>あなたのコーピング傾向（参考）</h2>
+      <div class="bars">
+        <div class="bar"><div class="lab">問題焦点</div><div class="track"><div class="fill" id="bPROBLEM"></div></div></div>
+        <div class="bar"><div class="lab">認知的再評価</div><div class="track"><div class="fill" id="bREAPPRAISAL"></div></div></div>
+        <div class="bar"><div class="lab">情動処理</div><div class="track"><div class="fill" id="bEMOTION"></div></div></div>
+        <div class="bar"><div class="lab">社会的支援</div><div class="track"><div class="fill" id="bSUPPORT"></div></div></div>
+        <div class="bar"><div class="lab">気晴らし</div><div class="track"><div class="fill" id="bDISTRACT"></div></div></div>
+        <div class="bar"><div class="lab">リラクゼーション</div><div class="track"><div class="fill" id="bRELAX"></div></div></div>
+      </div>
+      <p class="lead" style="margin-top:10px">※ スコアは診断時に保存された場合のみ表示されます。</p>
+    </section>
+
+    <footer>© 6StressTypes</footer>
+  </div>
+
+  <script>
+  // localStorage から診断結果を読み込み
+  const typeScores = safeJson(localStorage.getItem('stress:typeScores'));
+  const copingScores = safeJson(localStorage.getItem('stress:copingScores'));
+
+  if(typeScores){
+    const box = document.getElementById('kpiBox');
+    box.hidden = false;
+    setText('kpiThought', typeScores.THOUGHT);
+    setText('kpiEmotion', typeScores.EMOTION);
+    setText('kpiAction',  typeScores.ACTION);
+    setText('kpiAvoid',   typeScores.AVOID);
+  }
+  if(copingScores){
+    const sec = document.getElementById('scoreSection');
+    sec.hidden = false;
+    const max = Math.max(1, ...Object.values(copingScores));
+    for(const k of ['PROBLEM','REAPPRAISAL','EMOTION','SUPPORT','DISTRACT','RELAX']){
+      const el = document.getElementById('b'+k);
+      if(el){ el.style.width = ((copingScores[k]/max)*100).toFixed(0)+'%'; }
+    }
+  }
+
+  document.getElementById('retryBtn').addEventListener('click', ()=>{
+    window.location.href = 'stress-quiz-30q.html';
+  });
+  document.getElementById('shareBtn').addEventListener('click', async ()=>{
+    const shareData = {
+      title: 'ストレス診断 結果',
+      text: '私のタイプは行動型（ACTION）でした。',
+      url: location.href
+    };
+    try{
+      if(navigator.share){ await navigator.share(shareData); }
+      else { await navigator.clipboard.writeText(shareData.text+' '+shareData.url); alert('結果リンクをコピーしました'); }
+    }catch(e){ console.log(e); }
+  });
+
+  function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent = v; }
+  function safeJson(s){ try{ return s? JSON.parse(s): null }catch(e){ return null } }
+  </script>
+</body>
+</html>

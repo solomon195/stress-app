@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ストレッサーとストレス反応 | 記事 | 性格診断テスト</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand:#4f46e5; --text:#374151; --bg:#f8f9fb; --card:#fff; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Noto Sans JP',sans-serif; margin:0; color:var(--text); background:var(--bg); }
+    header { background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:50; }
+    .navbar { display:flex; justify-content:space-between; align-items:center; padding:16px 32px; max-width:1200px; margin:0 auto; }
+    .logo { font-weight:700; font-size:20px; color:var(--brand); text-decoration:none; }
+    .nav-links { display:flex; gap:24px; align-items:center; }
+    .nav-links a { text-decoration:none; color:#1f2937; font-size:14px; }
+    .nav-links a.active { color:var(--brand); font-weight:700; }
+    .nav-links a:hover { color:var(--brand); }
+    .nav-actions { display:flex; gap:16px; align-items:center; }
+
+    .wrap { max-width:900px; margin:24px auto 40px; padding:0 20px; }
+    .breadcrumbs { font-size:12px; color:var(--muted); margin-bottom:12px; }
+    .breadcrumbs a { color:var(--muted); text-decoration:none; }
+    .breadcrumbs a:hover { text-decoration:underline; }
+
+    .article { background:var(--card); border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,.06); padding:28px; }
+    .article h1 { margin:0 0 6px; font-size:28px; color:#111827; }
+    .meta { color:var(--muted); font-size:12px; margin-bottom:16px; }
+    .lead { font-size:15px; line-height:1.9; color:#111827; background:#f3f4f6; padding:14px 16px; border-radius:10px; }
+
+    .toc { margin:18px 0 8px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; }
+    .toc strong { font-size:13px; }
+    .toc ol { margin:8px 0 0 18px; padding:0; }
+    .toc a { color:var(--brand); text-decoration:none; font-size:14px; }
+
+    h2 { margin:26px 0 10px; font-size:20px; color:#111827; }
+    h3 { margin:18px 0 8px; font-size:17px; color:#111827; }
+    p { line-height:1.95; font-size:15px; color:#1f2937; margin:0 0 14px; }
+    ul, ol { margin:0 0 14px 18px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .box { background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; }
+    .mini { font-size:13px; color:#4b5563; }
+    .check li { margin:4px 0; }
+
+    .note { font-size:12px; color:var(--muted); border-left:3px solid #e5e7eb; padding-left:10px; }
+
+    .cta { background:#eef2ff; border:1px solid #c7d2fe; padding:16px; border-radius:12px; }
+    .cta h3 { margin:0 0 8px; }
+
+    .article-footer { margin-top:24px; padding-top:16px; border-top:1px solid #eef2f7; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; font-size:14px; }
+    .btn-outline { color:var(--brand); border:1px solid #c7d2fe; background:#fff; }
+    .btn-primary { color:#fff; background:var(--brand); }
+
+    footer { text-align:center; padding:30px; font-size:12px; color:#888; }
+    @media (max-width: 700px){ .grid-2 { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a class="logo" href="index.html">16Personalities</a>
+      <div class="nav-links">
+        <a href="index.html#">性格診断テスト</a>
+        <a href="index.html#">性格タイプ</a>
+        <a href="index.html#">キャリアキット</a>
+        <a href="index.html#">ビジネス</a>
+        <a class="active" href="kiji.html">記事</a>
+      </div>
+      <div class="nav-actions" id="nav-actions">
+        <a href="Login.html">ログイン</a>
+        <span>🇯🇵</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="breadcrumbs">
+      <a href="kiji.html">記事</a> / <span>ストレッサーとストレス反応</span>
+    </div>
+
+    <article class="article">
+      <header>
+        <h1>ストレッサーとストレス反応——「原因」と「反応」を分けて考える</h1>
+        <div class="meta">公開日: 2025-09-02 ・ カテゴリ: 心理 / 基礎知識</div>
+        <p class="lead">
+          ストレスは、<strong>ストレッサー（原因）</strong>と<strong>ストレス反応（心身の変化）</strong>の組み合わせ。
+          この2つを切り分けて捉えるだけで、対処はぐっとシンプルになります。
+        </p>
+      </header>
+
+      <nav class="toc">
+        <strong>目次</strong>
+        <ol>
+          <li><a href="#what-stressor">ストレッサーって何？</a></li>
+          <li><a href="#what-response">ストレス反応とは？</a></li>
+          <li><a href="#differences">同じストレッサーでも人によって違う理由</a></li>
+          <li><a href="#cope">上手に付き合うためのポイント</a></li>
+          <li><a href="#summary">まとめ</a></li>
+          <li><a href="#cta">自分の反応タイプをチェック</a></li>
+        </ol>
+      </nav>
+
+      <section id="what-stressor">
+        <h2>ストレッサーって何？</h2>
+        <p>ストレスの原因となる刺激や出来事を<strong>ストレッサー</strong>と呼びます。外部環境だけでなく、予測や想像など内的な要因も含まれます。</p>
+        <div class="grid-2">
+          <div class="box">
+            <h3>よくある外的ストレッサー</h3>
+            <ul class="check">
+              <li>試験・仕事の締め切り</li>
+              <li>人間関係のトラブル</li>
+              <li>騒音・暑さ・寒さ・混雑などの環境</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>内的ストレッサー</h3>
+            <ul class="check">
+              <li>「失敗したらどうしよう」という予期不安</li>
+              <li>完璧主義による自己圧</li>
+              <li>過去体験の想起（トリガー）</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-response">
+        <h2>ストレス反応とは？</h2>
+        <p>ストレッサーを受けたとき、心や体に起こる変化が<strong>ストレス反応</strong>です。これは生存に役立つ自然な仕組みです。</p>
+        <div class="grid-2">
+          <div class="box">
+            <h3>身体に出る反応</h3>
+            <ul>
+              <li>心拍数・血圧の上昇、手汗</li>
+              <li>筋肉の緊張、肩こり、頭痛</li>
+              <li>胃の不調、食欲の変化</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>心に出る反応</h3>
+            <ul>
+              <li>不安・イライラ・焦り</li>
+              <li>集中の乱れ、眠りの質低下</li>
+              <li>悲観的な思考の増加</li>
+            </ul>
+          </div>
+        </div>
+        <p class="note">これは体が「戦うか、逃げるか」を準備しているサイン。反応そのものは正常です。</p>
+      </section>
+
+      <section id="differences">
+        <h2>同じストレッサーでも人によって違う理由</h2>
+        <p>同じ出来事でも、反応は人それぞれ。分岐点は<strong>受け止め方（評価）</strong>と<strong>現在のコンディション</strong>です。</p>
+        <ul>
+          <li>例：試験前に<strong>眠れない人</strong> vs <strong>集中力が上がる人</strong></li>
+          <li>評価の違い：「脅威」か「挑戦」かの解釈</li>
+          <li>体調・睡眠・栄養・支持関係などの土台</li>
+        </ul>
+      </section>
+
+      <section id="cope">
+        <h2>上手に付き合うためのポイント</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>からだを落ち着ける（反応の調整）</h3>
+            <ul class="check">
+              <li>深呼吸：4秒吸って6秒吐く×2〜3分</li>
+              <li>軽い運動・ストレッチ・散歩</li>
+              <li>短い休憩、温かい飲み物でクールダウン</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>見方を整える（評価の調整）</h3>
+            <ul class="check">
+              <li>事実／解釈／望む状態を一行ずつメモ</li>
+              <li>「いま自分が変えられること」を1つ選ぶ</li>
+              <li>相談して視点を増やす（社会的支援）</li>
+            </ul>
+          </div>
+        </div>
+        <p class="mini">ストレッサーはゼロにできなくても、<strong>反応の強度</strong>と<strong>評価の向き</strong>は調整できます。</p>
+      </section>
+
+      <section id="summary">
+        <h2>まとめ</h2>
+        <p>
+          ストレスは「<strong>ストレッサー（原因）</strong> × <strong>ストレス反応（心身の変化）</strong>」。
+          避けにくい原因でも、自分の反応を理解して工夫すれば、負荷を軽くし、<strong>成長のきっかけ</strong>に変えられます。
+        </p>
+      </section>
+
+      <section id="cta" class="cta">
+        <h3>あなたのストレス反応タイプを診断してみませんか？</h3>
+        <p>
+          自分がどんな反応パターンを持っているのかを知ることは、ストレスとの上手な付き合い方の第一歩です。
+          診断後は、タイプに合った具体的な対処法もご案内します。
+        </p>
+        <a class="btn btn-primary" href="index.html">ストレス診断を受ける</a>
+      </section>
+
+      <div class="article-footer">
+        <a class="btn btn-outline" href="kiji.html">← 記事一覧へ戻る</a>
+        <a class="btn btn-primary" href="index.html">今すぐ診断する</a>
+      </div>
+
+      <p class="note">※ 本ページは一般的な情報提供です。強い苦痛が続く場合は、医療・専門機関へご相談ください。</p>
+    </article>
+  </main>
+
+  <footer>© 2025 性格診断 by あなたの名前</footer>
+
+  <!-- Firebase（任意：ログイン状態の表示用） -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxv-uF7qfCohDrM7M6GHYIg8dgXRDFuw",
+      authDomain: "new-stress.firebaseapp.com",
+      projectId: "new-stress",
+      storageBucket: "new-stress.appspot.com",
+      messagingSenderId: "69761646862",
+      appId: "1:69761646862:web:3eaec69feb21efc14c575f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const navActions = document.getElementById('nav-actions');
+    function renderLoggedOut(){ 
+      navActions.innerHTML='';
+      const a=document.createElement('a'); a.href='Login.html'; a.textContent='ログイン';
+      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px';
+      navActions.appendChild(a); navActions.appendChild(l);
+    }
+    function renderLoggedIn(user){
+      navActions.innerHTML='';
+      const n=document.createElement('span'); n.textContent=(user.displayName||user.email)+' さん'; n.style.marginRight='12px';
+      const lo=document.createElement('a'); lo.href='#'; lo.textContent='ログアウト';
+      lo.addEventListener('click',async(e)=>{e.preventDefault(); await auth.signOut();});
+      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px';
+      navActions.appendChild(n); navActions.appendChild(lo); navActions.appendChild(l);
+    }
+    auth.onAuthStateChanged(u=>u?renderLoggedIn(u):renderLoggedOut());
+  </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ストレス診断（30問・7段階・10問ずつ）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f5f7; --text:#111827; --muted:#6b7280; --card:#fff; --brand:#4f46e5;
+      --agree:#22c55e; --disagree:#ef4444; --neutral:#9ca3af;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,-apple-system}
+    .wrap{max-width:960px;margin:0 auto;padding:24px 16px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .brand{font-weight:700;font-size:1.2rem;color:var(--brand)}
+    .progress{flex:1;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0;background:var(--brand);transition:width .25s ease}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.8rem}
+
+    .card{background:var(--card);border-radius:16px;padding:24px;box-shadow:0 10px 25px rgba(0,0,0,.05)}
+
+    .group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .group-title{font-weight:700}
+    .scale-legend{display:flex;gap:12px;color:var(--muted);font-size:.85rem;align-items:center}
+    .legend-dot{width:10px;height:10px;border-radius:50%}
+
+    .q-list{display:grid;grid-template-columns:1fr;gap:18px}
+    .q-item{padding:14px 14px;border-radius:12px;border:1px solid #e5e7eb}
+    .qtop{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:8px}
+    .qnum{color:var(--muted);font-size:.9rem}
+    .qtext{font-size:1.05rem;line-height:1.6}
+
+    /* --- MBTI風 7段階ドット --- */
+    .scale{display:flex;align-items:center;gap:10px;margin-top:8px}
+    .scale .side{width:140px;font-size:.85rem;color:var(--muted)}
+    .scale .dots{display:flex;gap:10px}
+    .option{position:relative}
+    input[type=radio]{position:absolute;opacity:0;pointer-events:none}
+    .dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #e5e7eb;cursor:pointer;user-select:none;transition:transform .08s ease}
+    .dot:active{transform:scale(.96)}
+
+    /* 左3=Disagree, 中央=Neutral, 右3=Agree っぽい配色 */
+    .dot[data-pos="1"], .dot[data-pos="2"], .dot[data-pos="3"]{background:#fff}
+    .dot[data-pos="1"]{border-color:#fde2e2}
+    .dot[data-pos="2"]{border-color:#fbd0d0}
+    .dot[data-pos="3"]{border-color:#f8b4b4}
+    .dot[data-pos="4"]{border-color:#d1d5db}
+    .dot[data-pos="5"]{border-color:#bbf7d0}
+    .dot[data-pos="6"]{border-color:#86efac}
+    .dot[data-pos="7"]{border-color:#4ade80}
+
+    input:checked + .dot{background:var(--brand);border-color:var(--brand);color:#fff}
+
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    button{padding:12px 18px;border-radius:10px;border:none;background:var(--brand);color:#fff;font-weight:600;cursor:pointer}
+    button.secondary{background:#e5e7eb;color:#111827}
+    button:disabled{opacity:.5;cursor:not-allowed}
+
+    footer{margin-top:20px;color:var(--muted);font-size:.8rem;text-align:center}
+
+    @media (max-width:700px){
+      .scale{flex-direction:column;align-items:flex-start}
+      .scale .side{width:auto}
+      .dot{width:34px;height:34px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">ストレス診断</div>
+      <div class="progress" aria-label="進捗"><div class="bar" id="bar"></div></div>
+      <div class="pill"><span id="pillIndex">1</span>-<span id="pillEnd">10</span>/<span id="pillTotal">30</span></div>
+    </header>
+
+    <main class="card" role="region" aria-live="polite">
+      <div class="group-head">
+        <div class="group-title" id="groupTitle">Q1〜Q10</div>
+        <div class="scale-legend">
+          <span class="legend-dot" style="background:#f8b4b4;border:1px solid #f8b4b4"></span>否定的
+          <span class="legend-dot" style="background:#d1d5db;border:1px solid #d1d5db"></span>中立
+          <span class="legend-dot" style="background:#86efac;border:1px solid #86efac"></span>肯定的
+        </div>
+      </div>
+
+      <form id="form">
+        <div class="q-list" id="qList"></div>
+        <div class="actions">
+          <button type="button" class="secondary" id="prevBtn">前の10問</button>
+          <button type="button" id="nextBtn">次の10問</button>
+          <button type="button" id="finishBtn">結果へ</button>
+        </div>
+      </form>
+    </main>
+
+    <footer>※ 回答は端末内にのみ一時保存されます（リロードで消えます）。</footer>
+  </div>
+
+  <script>
+  // --- 6コーピング → 4タイプのマッピング（集計は別ページ遷移時に使用）---
+  const TYPE_PAGES = {
+    THOUGHT: 'shikoresult.html',  // 思考型
+    EMOTION: 'kanjoresult.html',  // 感情型
+    ACTION: 'kodoresult.html',    // 行動型
+    AVOID: 'kaihiresult.html'     // 回避型
+  };
+
+  const QUESTIONS = [
+    // 問題焦点型 (PROBLEM)
+    { t: '問題の原因を洗い出し、対策リストを作る。', k: 'PROBLEM' },
+    { t: '締め切りや優先順位を見直して計画を立て直す。', k: 'PROBLEM' },
+    { t: '困ったらまず事実を集めて情報を整理する。', k: 'PROBLEM' },
+    { t: '具体的な次の一手（ToDo）を書き出す。', k: 'PROBLEM' },
+    { t: '必要なスキルを学ぶ/調べることで解決に近づく。', k: 'PROBLEM' },
+
+    // 認知的再評価型 (REAPPRAISAL)
+    { t: '出来事の意味づけを変えて前向きに捉え直す。', k: 'REAPPRAISAL' },
+    { t: '「最悪の想定」ではなく「現実的な想定」を考える。', k: 'REAPPRAISAL' },
+    { t: '自分のコントロール可能/不可能を切り分ける。', k: 'REAPPRAISAL' },
+    { t: '失敗から学べる点を探す。', k: 'REAPPRAISAL' },
+    { t: '完璧主義ではなく十分主義で臨む。', k: 'REAPPRAISAL' },
+
+    // 情動処理型 (EMOTION)
+    { t: 'つらさ/不安/怒りなどの感情を言語化して表現する。', k: 'EMOTION' },
+    { t: '泣いたり日記を書くなどして気持ちを発散する。', k: 'EMOTION' },
+    { t: '安心できる空間で自分の感情に丁寧に向き合う。', k: 'EMOTION' },
+    { t: '音楽やアートで気持ちの整理を助ける。', k: 'EMOTION' },
+    { t: '怒りを安全な方法（紙に書く・深呼吸など）で収める。', k: 'EMOTION' },
+
+    // 社会的支援探索型 (SUPPORT)
+    { t: '信頼できる人に相談してフィードバックをもらう。', k: 'SUPPORT' },
+    { t: '同じ経験を持つ人の体験談やコミュニティを探す。', k: 'SUPPORT' },
+    { t: '助けを求めるメッセージをためらわず送る。', k: 'SUPPORT' },
+    { t: '家族や友人と一緒に過ごして安心感を得る。', k: 'SUPPORT' },
+    { t: '専門家（医療/カウンセラー/先輩）に頼る。', k: 'SUPPORT' },
+
+    // 気晴らし型 (DISTRACT)
+    { t: '運動や散歩など体を動かして気分転換する。', k: 'DISTRACT' },
+    { t: '趣味やゲーム、動画視聴で一度頭を切り替える。', k: 'DISTRACT' },
+    { t: '短時間の休憩を入れて集中を回復させる。', k: 'DISTRACT' },
+    { t: '場所を変える（カフェ/図書館など）ことで気分を変える。', k: 'DISTRACT' },
+    { t: '早歩きやストレッチでスイッチを入れ直す。', k: 'DISTRACT' },
+
+    // リラクゼーション型 (RELAX)
+    { t: '深呼吸/瞑想/マインドフルネスで心身を落ち着ける。', k: 'RELAX' },
+    { t: '温浴/マッサージ/アロマなどで緊張をゆるめる。', k: 'RELAX' },
+    { t: '睡眠リズムを整えるため就寝前のルーティンを守る。', k: 'RELAX' },
+    { t: '自然の中で静かな時間を過ごす。', k: 'RELAX' },
+    { t: '深い腹式呼吸やストレッチで自律神経を整える。', k: 'RELAX' },
+  ];
+
+  // ブロックごと軽シャッフル（各5問の順序だけをランダムに）
+  function shuffleBlockwise(list, block=5){
+    const out=[];
+    for(let i=0;i<list.length;i+=block){
+      const chunk=list.slice(i,i+block);
+      for(let j=chunk.length-1;j>0;j--){
+        const r=Math.floor(Math.random()*(j+1));
+        [chunk[j],chunk[r]]=[chunk[r],chunk[j]];
+      }
+      out.push(...chunk);
+    }
+    return out;
+  }
+  const qs = shuffleBlockwise(QUESTIONS, 5);
+
+  const state = {
+    page: 0, // 0,1,2 (各10問)
+    answers: Array(qs.length).fill(null) // 1..7 or null
+  };
+
+  const qList = document.getElementById('qList');
+  const bar = document.getElementById('bar');
+  const groupTitle = document.getElementById('groupTitle');
+  const pillIndex = document.getElementById('pillIndex');
+  const pillEnd = document.getElementById('pillEnd');
+  const pillTotal = document.getElementById('pillTotal');
+  pillTotal.textContent = qs.length;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const finishBtn = document.getElementById('finishBtn');
+
+  prevBtn.addEventListener('click', () => { if(state.page>0){ state.page--; renderPage(); } });
+  nextBtn.addEventListener('click', () => { if(state.page<2){ state.page++; renderPage(); } });
+  finishBtn.addEventListener('click', () => finish());
+
+  function renderPage(){
+    const start = state.page*10;
+    const end = Math.min(start+10, qs.length);
+    groupTitle.textContent = `Q${start+1}〜Q${end}`;
+    pillIndex.textContent = start+1;
+    pillEnd.textContent = end;
+    bar.style.width = `${(end/qs.length)*100}%`;
+
+    qList.innerHTML = '';
+    for(let i=start;i<end;i++){
+      const q = qs[i];
+      const item = document.createElement('div');
+      item.className = 'q-item';
+
+      const top = document.createElement('div');
+      top.className = 'qtop';
+      const num = document.createElement('div');
+      num.className = 'qnum';
+      num.textContent = `Q${i+1}`;
+      const text = document.createElement('div');
+      text.className = 'qtext';
+      text.textContent = q.t;
+      top.appendChild(num); top.appendChild(text);
+
+      const scale = document.createElement('div');
+      scale.className = 'scale';
+      const left = document.createElement('div'); left.className='side'; left.textContent = '全く当てはまらない';
+      const right = document.createElement('div'); right.className='side'; right.textContent = 'とても当てはまる';
+      const dots = document.createElement('div'); dots.className='dots';
+
+      for(let v=1; v<=7; v++){
+        const wrap = document.createElement('label');
+        wrap.className='option';
+        const input = document.createElement('input');
+        input.type='radio'; input.name=`q${i}`; input.value=v; input.checked = state.answers[i]===v;
+        input.addEventListener('change', ()=>{ state.answers[i]=v; });
+        const dot = document.createElement('span'); dot.className='dot'; dot.dataset.pos=String(v); dot.textContent='';
+        wrap.appendChild(input); wrap.appendChild(dot); dots.appendChild(wrap);
+      }
+
+      scale.appendChild(left); scale.appendChild(dots); scale.appendChild(right);
+      item.appendChild(top); item.appendChild(scale);
+      qList.appendChild(item);
+    }
+
+    prevBtn.disabled = state.page===0;
+    nextBtn.style.display = state.page<2 ? 'inline-block' : 'none';
+    finishBtn.style.display = state.page===2 ? 'inline-block' : 'none';
+  }
+
+  function finish(){
+    // 未回答は中立(4)で補完
+    const filled = state.answers.map(v => v ?? 4);
+    const copingScores = { PROBLEM:0, REAPPRAISAL:0, EMOTION:0, SUPPORT:0, DISTRACT:0, RELAX:0 };
+    for(let i=0;i<qs.length;i++){
+      const key = qs[i].k; copingScores[key] += filled[i];
+    }
+
+    const typeScores = {
+      THOUGHT: copingScores.PROBLEM + copingScores.REAPPRAISAL,
+      EMOTION: copingScores.EMOTION + copingScores.SUPPORT,
+      ACTION:  copingScores.DISTRACT,
+      AVOID:   copingScores.RELAX
+    };
+
+    const order = ['THOUGHT','EMOTION','ACTION','AVOID'];
+    let best = order[0];
+    for(const k of order){ if(typeScores[k] > typeScores[best]) best = k; }
+    const url = TYPE_PAGES[best] || 'shikoresult.html';
+    window.location.href = url;
+  }
+
+  // 初期描画
+  renderPage();
+  </script>
+</body>
+</html>

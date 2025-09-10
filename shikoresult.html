@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>結果｜思考型（ストレス対処）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================
+       Design Tokens
+       ========================= */
+    :root{
+      --bg:#f6f7fb; --text:#0f172a; --muted:#6b7280; --card:#ffffff; --brand:#2563eb;
+      --ok:#10b981; --warn:#f59e0b; --bad:#ef4444; --line:#e5e7eb;
+      --blue-25:#f5f8ff; --blue-50:#eff6ff; --blue-100:#dbeafe; --blue-200:#bfdbfe; --blue-700:#1d4ed8;
+      --shadow-sm:0 2px 8px rgba(15,23,42,.06);
+      --shadow-md:0 8px 28px rgba(15,23,42,.08);
+      --shadow-lg:0 18px 44px rgba(15,23,42,.12);
+      --radius-lg:18px; --radius-md:12px; --radius-sm:10px;
+      --grid-w:1000px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1020; --text:#e5edff; --muted:#93a4c7; --card:#0f1830; --brand:#60a5fa;
+        --line:#14203d; --blue-25:#0b142a; --blue-50:#0f1b38; --blue-100:#13224a; --blue-200:#193062; --blue-700:#7cb0ff;
+        --shadow-sm:0 2px 10px rgba(0,0,0,.35);
+        --shadow-md:0 10px 30px rgba(0,0,0,.45);
+        --shadow-lg:0 22px 60px rgba(0,0,0,.55);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; background:var(--bg); color:var(--text);
+      font-family:"Noto Sans JP","Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--grid-w);margin:0 auto;padding:28px 18px}
+
+    /* =========================
+       Global Type Scale + Utilities
+       ========================= */
+    h1{font-weight:700;letter-spacing:.2px}
+    h2{font-weight:700;letter-spacing:.2px}
+    .lead{color:var(--muted);line-height:1.9}
+    .eyebrow{font-weight:700;letter-spacing:.06em;text-transform:none}
+
+    /* 小見出しアクセント線 */
+    h2{position:relative;margin:0 0 12px;font-size:1.18rem}
+    h2::after{
+      content:""; position:absolute; left:0; bottom:-8px; width:64px; height:3px;
+      background:linear-gradient(90deg,var(--brand),transparent 70%);
+      border-radius:999px; opacity:.8;
+    }
+
+    /* カード */
+    .card{
+      background:linear-gradient(180deg, color-mix(in oklab, var(--card), #fff 6%), var(--card));
+      border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-md);
+      border:1px solid color-mix(in oklab, var(--line), transparent 40%);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+
+    /* グリッド */
+    .section{margin-top:26px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:980px){ .grid-2,.grid-3{grid-template-columns:1fr} }
+
+    /* ボタン */
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      --bgc:var(--brand);
+      padding:12px 16px;border:none;border-radius:12px;background:var(--bgc);
+      color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--shadow-sm);
+      transition:transform .06s ease, box-shadow .2s ease, opacity .2s ease, background .2s ease;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow-md)}
+    .btn:active{transform:translateY(0)}
+    .btn.secondary{--bgc:color-mix(in oklab, var(--blue-200), #fff 30%); color:var(--text)}
+    .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+
+    /* =========================
+       Header
+       ========================= */
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .brand{font-weight:800;color:var(--brand);letter-spacing:.2px}
+
+    /* =========================
+       Hero Band
+       ========================= */
+    .hero-band{
+      position:relative; padding-top:20px; overflow:clip; border-bottom:1px solid var(--line);
+      background:
+        radial-gradient(1400px 520px at 50% -240px, color-mix(in oklab, var(--blue-50), #fff 35%) 8%, var(--blue-50) 48%, transparent 78%),
+        linear-gradient(180deg, color-mix(in oklab, var(--blue-25), transparent 20%), transparent 60%);
+    }
+    .hero-band .inner{
+      max-width:1200px; margin:0 auto; padding:0 18px 34px; min-height:380px; position:relative; isolation:isolate;
+    }
+    .hero-band .blue-shape{
+      position:absolute; inset:auto 0 0 0; height:360px; z-index:0;
+      background:
+        linear-gradient(12deg, color-mix(in oklab, var(--brand), #fff 8%), var(--brand)),
+        radial-gradient(1200px 360px at 90% 60%, color-mix(in oklab, #ffffff, transparent 70%), transparent 70%);
+      clip-path:polygon(0 12%, 96% 0, 100% 52%, 96% 100%, 0 90%);
+      filter:saturate(105%);
+    }
+    .hero-band .copy{ position:relative; z-index:2; padding-top:40px; max-width:680px; color:#fff; }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      margin:0 0 10px;padding:8px 14px;border-radius:999px;
+      background:#fff;color:var(--brand);box-shadow:var(--shadow-sm)
+    }
+    .eyebrow::before{
+      content:"🧠"; font-size:1.05rem; transform:translateY(1px);
+    }
+    .hero-band h1{
+      margin:0; font-size:clamp(30px,4.6vw,44px); line-height:1.12; color:#ffffff;
+      text-shadow:0 2px 4px rgba(0,0,0,.25)
+    }
+    .sub{
+      margin:12px 0 0; color:#e8f1ff; font-weight:700; letter-spacing:.3px;
+      text-shadow:0 1px 3px rgba(0,0,0,.28)
+    }
+    .hero-illust{
+      position:absolute; z-index:2; right:max(16px, calc((100vw - 1200px)/2)); bottom:-6px;
+      width:min(560px, 44vw); max-height:380px; object-fit:contain; display:block;
+      filter:drop-shadow(0 16px 36px rgba(0,0,0,.22)); pointer-events:none; user-select:none;
+      transition:transform 0.6s cubic-bezier(.2,.8,.2,1);
+    }
+    .hero-illust:hover{ transform: translateY(-4px) }
+
+    /* =========================
+       Title Row / Chips / KPI
+       ========================= */
+    .title{display:flex;align-items:center;gap:10px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:var(--blue-100);color:#1e3a8a;font-weight:700;font-size:.88rem}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      background:linear-gradient(180deg, var(--blue-100), color-mix(in oklab, var(--blue-100), #fff 30%));
+      color:#1e3a8a;padding:7px 12px;border-radius:999px;font-weight:700;font-size:.88rem;border:1px solid color-mix(in oklab, var(--blue-200), transparent 36%);
+    }
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    .kpi{
+      border-radius:14px;padding:14px;text-align:center;background:
+        linear-gradient(180deg, color-mix(in oklab, var(--card), #fff 8%), var(--card));
+      border:1px solid color-mix(in oklab, var(--line), transparent 38%);
+      box-shadow:var(--shadow-sm)
+    }
+    .kpi .val{font-size:1.18rem;font-weight:800}
+    .kpi small{color:var(--muted)}
+
+    /* =========================
+       Lists with custom markers
+       ========================= */
+    .list{display:grid;gap:10px;color:var(--text);padding-left:0;margin:0}
+    .list li{list-style:none;line-height:1.85;position:relative;padding-left:28px}
+    .list li::before{
+      content:""; position:absolute; left:0; top:.7em; width:16px; height:16px;
+      border-radius:6px;
+      background:
+        radial-gradient(6px 6px at 4px 4px, #fff 50%, transparent),
+        linear-gradient(135deg, var(--brand), var(--blue-700));
+      box-shadow:0 2px 6px rgba(37,99,235,.25);
+    }
+
+    /* =========================
+       Bars (Animated)
+       ========================= */
+    .bars{display:grid;gap:12px;margin-top:6px}
+    .bar{display:grid;grid-template-columns:160px 1fr;align-items:center;gap:12px}
+    .bar .lab{color:var(--muted);font-weight:700;letter-spacing:.2px}
+    .bar .track{height:14px;background:color-mix(in oklab, var(--blue-100), #fff 10%);border-radius:999px;overflow:hidden;position:relative}
+    .bar .fill{
+      height:100%;
+      background:linear-gradient(90deg, var(--brand) 0%, color-mix(in oklab, var(--brand), #fff 18%) 60%, var(--blue-700) 100%);
+      width:0; transition:width .9s cubic-bezier(.2,.8,.2,1);
+      box-shadow:inset 0 0 8px rgba(255,255,255,.15), 0 2px 8px rgba(29,78,216,.25);
+    }
+
+    /* =========================
+       Share Card / Footer
+       ========================= */
+    .sharecard{
+      display:flex;gap:12px;align-items:center;
+      border:1px dashed color-mix(in oklab, var(--line), transparent 30%);
+      border-radius:14px;padding:14px;background:var(--blue-50)
+    }
+    .sharecard strong{color:var(--blue-700)}
+    footer{margin:26px 0 18px;color:var(--muted);font-size:.82rem;text-align:center}
+
+    /* =========================
+       Media Tweaks
+       ========================= */
+    @media(max-width:900px){
+      .hero-band .inner{min-height:310px}
+      .hero-band .blue-shape{height:310px}
+      .hero-illust{width:min(420px, 56vw); max-height:300px}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .bar{grid-template-columns:120px 1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero-band">
+    <div class="inner">
+      <div class="blue-shape" aria-hidden="true"></div>
+      <div class="copy">
+        <div class="eyebrow">あなたの思考タイプ</div>
+        <h1>思考タイプ｜冷静分析で問題を斬る</h1>
+        <p class="sub">ストレスは「原因→仮説→検証」で攻略。感情に流されず、根本から変えるプランナー。</p>
+      </div>
+      <img class="hero-illust" src="resultgazo/shikoresult3.png" alt="思考タイプ イラスト">
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- ===== Header ===== -->
+    <header>
+      <div class="brand">6StressTypes</div>
+      <div class="actions">
+        <button class="btn" id="retryBtn">もう一度診断</button>
+        <button class="btn secondary" id="shareBtn">結果をシェア</button>
+        <button class="btn ghost" id="saveBtn">PDF保存（β）</button>
+      </div>
+    </header>
+
+    <!-- ===== Summary ===== -->
+    <section class="section card">
+      <div class="title">
+        <span class="badge">タイプ概要</span>
+        <h2 style="margin:0">思考型（THOUGHT）とは</h2>
+      </div>
+      <p class="lead">状況を俯瞰して要因を切り分け、最短ルートを設計して動くタイプ。<b>問題焦点型</b>と<b>認知的再評価</b>のコーピングが得意で、事実ベースの判断と仕組み化に強み。</p>
+      <div class="chips">
+        <span class="chip">原因分析</span><span class="chip">優先順位付け</span><span class="chip">再現性</span>
+        <span class="chip">合意形成</span><span class="chip">実験設計</span><span class="chip">フェアネス</span>
+      </div>
+      <div class="kpis" id="kpiBox" hidden>
+        <div class="kpi"><div class="val" id="kpiThought">--</div><small>思考型スコア</small></div>
+        <div class="kpi"><div class="val" id="kpiEmotion">--</div><small>感情型</small></div>
+        <div class="kpi"><div class="val" id="kpiAction">--</div><small>行動型</small></div>
+        <div class="kpi"><div class="val" id="kpiAvoid">--</div><small>回避型</small></div>
+      </div>
+    </section>
+
+    <!-- ===== Strengths / Pitfalls ===== -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2>強み</h2>
+        <ul class="list">
+          <li><b>原因分析力</b>：一次原因を特定し、無駄打ちを減らす。</li>
+          <li><b>構造化</b>：複雑な情報を図式化し、共有しやすくする。</li>
+          <li><b>計画遂行</b>：目標→制約→手順でブレない推進力。</li>
+          <li><b>公平性</b>：事実を優先し、納得性の高い意思決定。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>つまずきやすい点</h2>
+        <ul class="list">
+          <li><b>過分析</b>：決めないリスク（分析麻痺）が発生しやすい。</li>
+          <li><b>共感漏れ</b>：論理が“冷たさ”として伝わる。</li>
+          <li><b>完璧主義</b>：80点施策を先送り→機会損失。</li>
+          <li><b>感情放置</b>：自分の疲労・モヤモヤをノイズ扱い。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Triggers & Signs ===== -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2>ストレスが増えるトリガー</h2>
+        <ul class="list">
+          <li>ゴール不明確／評価基準が曖昧</li>
+          <li>非合理な方針変更・根拠のない指示</li>
+          <li>時間だけ厳しく<b>裁量がない</b>状況</li>
+          <li>感情論での意思決定（合意プロセスが崩れる）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>出やすいサイン</h2>
+        <ul class="list">
+          <li>微細な改善に固執、TODOばかり増える</li>
+          <li>「あと少し情報があれば…」が口癖</li>
+          <li>相手に論点表だけ渡して会話が終わる</li>
+          <li>睡眠と食事の最適化に過度にこだわる</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Coping Playbook ===== -->
+    <section class="section card">
+      <div class="title">
+        <span class="badge">実践</span>
+        <h2 style="margin:0">問題焦点型コーピング・プレイブック（5ステップ）</h2>
+      </div>
+      <ol class="list">
+        <li><b>課題リフレーミング</b>：「悩み」を<b>質問</b>に変換（例：次に何を検証すれば確度が上がる？）</li>
+        <li><b>事実／解釈／推測の分離</b>：3列メモで混線を防ぐ</li>
+        <li><b>制約の明確化</b>：時間・人・コストの上限を書いて探索空間を狭める</li>
+        <li><b>最小実験</b>：48時間以内に<b>小さく検証</b>（成功条件を1行で定義）</li>
+        <li><b>学習ログ</b>：仮説→結果→学び→次の一手を1行で記録（再現性の資産化）</li>
+      </ol>
+      <p class="lead">補助として<b>情動焦点型</b>（呼吸法・5分散歩・メタ認知メモ）を短時間で併用すると効果UP。</p>
+    </section>
+
+    <!-- ===== Scenes ===== -->
+    <section class="section">
+      <div class="grid-2">
+        <div class="card">
+          <h2>職場での振る舞い</h2>
+          <ul class="list">
+            <li>会議冒頭に<b>目的→評価基準→制約</b>を確認してから議論。</li>
+            <li>意思決定は<b>基準×重み×スコア</b>表で可視化。</li>
+            <li>「まずは<b>80点でローンチ</b>→改善」で分析麻痺を回避。</li>
+            <li>相手の<b>感情ラベリングを1語</b>だけ挟んでから提案。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>家庭・プライベート</h2>
+          <ul class="list">
+            <li>悩み相談は<b>共感→要約→選択肢</b>の順で寄り添い度を上げる。</li>
+            <li>家事トラブルは<b>チェックリスト</b>化し再発を防止。</li>
+            <li>休日は<b>ノー改善デー</b>を設け、感情の充電に専念。</li>
+            <li>睡眠・運動・食事の<b>最低ライン</b>（守る3つ）を書き出す。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:18px">
+        <div class="card">
+          <h2>恋愛・パートナーシップ</h2>
+          <ul class="list">
+            <li>「今は解決が必要？それとも共感が欲しい？」と<b>モード確認</b>。</li>
+            <li>フィードバックは<b>観察→影響→提案</b>の3行で短く。</li>
+            <li>記念日・感謝を<b>トリガー化</b>（カレンダー/ショートメモ）。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>学習・自己成長</h2>
+          <ul class="list">
+            <li><b>90分スプリント</b>→10分デフラグ（学び1行ログ）。</li>
+            <li>目標は<b>成果×締切×測定指標</b>で定義。</li>
+            <li>月1で<b>やらないことリスト</b>を更新し集中力を確保。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card section" style="margin-top:18px">
+        <h2>チームワーク（合意形成）</h2>
+        <ul class="list">
+          <li>まず<b>決め方を決める</b>（誰が・いつ・どの基準で）。</li>
+          <li>反対意見には<b>デビルズアドボケイト</b>役を任命。</li>
+          <li>議事は<b>決定・根拠・保留・次の行動</b>の4行で共有。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Identity A/T ===== -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2>自信型（A）寄り</h2>
+        <ul class="list">
+          <li>リスク過小評価を<b>チェックリスト</b>で補正。</li>
+          <li>成功確率に甘さが出やすい→<b>第三者レビュー</b>を固定化。</li>
+          <li>楽観で押し切らず、<b>最悪ケース</b>も1行で想定。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>不安型（T）寄り</h2>
+        <ul class="list">
+          <li>反芻を止める<b>時間制限付き振り返り（5分）</b>。</li>
+          <li><b>小さな勝ち</b>を毎日可視化（Doneリスト）。</li>
+          <li>自責が強い時は<b>事実だけ</b>を箇条書き→次の一手。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Bars (scores if saved) ===== -->
+    <section class="section card" id="scoreSection" hidden>
+      <h2>あなたのコーピング傾向（参考）</h2>
+      <div class="bars">
+        <div class="bar"><div class="lab">問題焦点</div><div class="track"><div class="fill" id="bPROBLEM"></div></div></div>
+        <div class="bar"><div class="lab">認知的再評価</div><div class="track"><div class="fill" id="bREAPPRAISAL"></div></div></div>
+        <div class="bar"><div class="lab">情動処理</div><div class="track"><div class="fill" id="bEMOTION"></div></div></div>
+        <div class="bar"><div class="lab">社会的支援</div><div class="track"><div class="fill" id="bSUPPORT"></div></div></div>
+        <div class="bar"><div class="lab">気晴らし</div><div class="track"><div class="fill" id="bDISTRACT"></div></div></div>
+        <div class="bar"><div class="lab">リラクゼーション</div><div class="track"><div class="fill" id="bRELAX"></div></div></div>
+      </div>
+      <p class="lead" style="margin-top:10px">※ スコアは診断時に保存された場合のみ表示されます。</p>
+    </section>
+
+    <!-- ===== Weekly plan / Do & Don't ===== -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2>1週間リセット・プラン</h2>
+        <ul class="list">
+          <li><b>毎朝3分：</b>今日の焦点“たった1つ”を書く。</li>
+          <li><b>昼の5分：</b>事実/解釈/推測を1件だけ整理。</li>
+          <li><b>夕方10分：</b>未解決1件を<b>最小実験</b>に落とす。</li>
+          <li><b>週1：</b>A3一枚の学びサマリー（画像化→共有）。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Do / Don’t</h2>
+        <ul class="list">
+          <li><b>Do：</b>目的→制約→選択肢→根拠の順で話す。</li>
+          <li><b>Do：</b>48時間以内に“手を動かす実験”を入れる。</li>
+          <li><b>Do：</b>感情ラベリングを1語だけ挟む。</li>
+          <li><b>Don’t：</b>情報収集だけで満足する。</li>
+          <li><b>Don’t：</b>反論を個人攻撃と受け取る。</li>
+          <li><b>Don’t：</b>完璧な資料がないと会議に出ない。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Share / CTA ===== -->
+    <section class="section card">
+      <div class="sharecard">
+        <div style="font-size:1.4rem">🧠</div>
+        <div style="flex:1">
+          <div><strong>冷静分析で問題解決！私は《思考タイプ》でした</strong></div>
+          <div class="lead">感情より理屈。ストレスの原因に真っ向勝負する頭脳派タイプ。</div>
+        </div>
+        <button class="btn secondary" id="copyShareText">コピー</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn" id="goOthers">他のタイプを見る</button>
+        <button class="btn ghost" id="retrySmall">質問に戻る</button>
+      </div>
+    </section>
+
+    <!-- ===== Conclusion ===== -->
+    <section class="section card">
+      <div class="title">
+        <span class="badge">総括</span>
+        <h2 style="margin:0">論理は、誰かの不安を軽くする力</h2>
+      </div>
+      <p class="lead">
+        あなたの分析力・計画力は、チームや家族にとって掛け替えのない資産です。<b>論理</b>に<b>共感</b>を一滴足し、
+        小さな実験を重ねてください。合意形成の仕組みを整えるほど、周囲はあなたの提案を受け入れやすくなり、
+        ストレスは「対処できる課題」へと姿を変えます。冷静さに温かさが加わったとき、あなたは最高の問題解決者になります。
+      </p>
+    </section>
+
+    <footer>© 6StressTypes</footer>
+  </div>
+
+  <script>
+    function safeJson(s){ try{ return s? JSON.parse(s): null }catch(e){ return null } }
+    function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent = v; }
+
+    const typeScores = safeJson(localStorage.getItem('stress:typeScores'));
+    const copingScores = safeJson(localStorage.getItem('stress:copingScores'));
+
+    if(typeScores){
+      const box = document.getElementById('kpiBox');
+      box.hidden = false;
+      setText('kpiThought', typeScores.THOUGHT ?? '--');
+      setText('kpiEmotion', typeScores.EMOTION ?? '--');
+      setText('kpiAction',  typeScores.ACTION  ?? '--');
+      setText('kpiAvoid',   typeScores.AVOID   ?? '--');
+    }
+
+    if(copingScores){
+      const sec = document.getElementById('scoreSection');
+      sec.hidden = false;
+      const max = Math.max(1, ...Object.values(copingScores));
+      const ids = ['PROBLEM','REAPPRAISAL','EMOTION','SUPPORT','DISTRACT','RELAX'];
+      const observer = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            ids.forEach(k=>{
+              const el = document.getElementById('b'+k);
+              if(el){ el.style.width = ((copingScores[k]/max)*100).toFixed(0)+'%'; }
+            });
+            observer.disconnect();
+          }
+        });
+      }, {threshold:0.3});
+      observer.observe(sec);
+    }
+
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ location.href = 'stress-quiz-30q.html'; });
+    document.getElementById('retrySmall').addEventListener('click', ()=>{ location.href = 'stress-quiz-30q.html'; });
+
+    document.getElementById('shareBtn').addEventListener('click', async ()=>{
+      const shareData = {
+        title: 'ストレス診断 結果',
+        text: '冷静分析で問題解決！私は《思考タイプ》でした🧠',
+        url: location.href
+      };
+      try{
+        if(navigator.share){ await navigator.share(shareData); }
+        else {
+          await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+          alert('結果リンクをコピーしました');
+        }
+      }catch(e){ console.log(e); }
+    });
+
+    document.getElementById('copyShareText').addEventListener('click', async ()=>{
+      const text = '💡冷静分析で問題解決！私は《思考タイプ》でした🧠✨ #6StressTypes';
+      try{
+        await navigator.clipboard.writeText(text + ' ' + location.href);
+        alert('シェア用テキストをコピーしました');
+      }catch(e){ console.log(e); }
+    });
+
+    document.getElementById('goOthers').addEventListener('click', ()=>{
+      location.href = 'types-index.html';
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', ()=>{ window.print(); });
+  </script>
+</body>
+</html>

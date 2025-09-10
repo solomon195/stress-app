@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>結果｜回避型（ストレス対処）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f5f7; --text:#111827; --muted:#6b7280; --card:#fff; --brand:#4f46e5;
+      --line:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,-apple-system}
+
+    /* ===== Top visual ===== */
+    .top-hero{
+      background: radial-gradient(1200px 400px at 50% -100px, #e7fbff 10%, #f0fdff 40%, #f7feff 75%);
+      border-bottom:1px solid var(--line);
+    }
+    .top-hero .inner{
+      max-width:1060px;margin:0 auto;padding:28px 16px 18px;
+      display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;
+    }
+    .top-hero img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 18px rgba(79,70,229,.25))}
+    .top-hero h1{
+      margin:0;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.15;font-weight:800;letter-spacing:.02em;color:#1f2937;
+    }
+    .top-hero .sub{margin-top:6px;color:var(--muted);font-weight:600}
+
+    .wrap{max-width:960px;margin:0 auto;padding:24px 16px}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .brand{font-weight:700;color:var(--brand)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-weight:600;cursor:pointer}
+    .btn.secondary{background:#e5e7eb;color:#111827}
+
+    .hero{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr;gap:14px}
+    .title{display:flex;align-items:center;gap:10px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.85rem}
+    .lead{color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .card{background:var(--card);border-radius:16px;padding:18px 18px;box-shadow:0 10px 25px rgba(0,0,0,.05)}
+    h2{font-size:1.05rem;margin:0 0 10px}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .kpi{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+    .kpi .val{font-size:1.1rem;font-weight:700}
+    .kpi small{color:var(--muted)}
+
+    .bars{display:grid;gap:10px}
+    .bar{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:10px}
+    .bar .lab{color:var(--muted)}
+    .bar .track{height:12px;background:#eef2ff;border-radius:999px;overflow:hidden}
+    .bar .fill{height:100%;background:var(--brand);width:0}
+
+    .list{display:grid;gap:8px;color:#111827}
+    .list li{line-height:1.7}
+
+    footer{margin-top:18px;color:var(--muted);font-size:.8rem;text-align:center}
+
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .top-hero .inner{grid-template-columns:84px 1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== TOP IMAGE & TITLE ===== -->
+  <section class="top-hero">
+    <div class="inner">
+      <!-- 透過PNG想定：/kekkagazo/kaihi2.png -->
+      <img src="kekkagazo/kaihi2.png" alt="回避タイプのキャラクター">
+      <div>
+        <h1>あなたは回避タイプ</h1>
+        <div class="sub">まず整えてから向き合う、回復優先のクールダウナー</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <header>
+      <div class="brand">ストレス診断</div>
+      <div class="actions">
+        <button class="btn" id="retryBtn">もう一度診断</button>
+        <button class="btn secondary" id="shareBtn">結果をシェア</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="title">
+        <span class="badge">あなたのタイプ</span>
+        <h2 style="margin:0">回避型（AVOID）</h2>
+      </div>
+      <p class="lead">まず<b>距離をとって整える</b>タイプ。心身の緊張をほぐし、回復してから向き合うのが得意。診断上は主に<b>リラクゼーション型</b>コーピングが強く出やすいタイプです。</p>
+      <div class="kpis" id="kpiBox" hidden>
+        <div class="kpi"><div class="val" id="kpiThought">--</div><small>思考型</small></div>
+        <div class="kpi"><div class="val" id="kpiEmotion">--</div><small>感情型</small></div>
+        <div class="kpi"><div class="val" id="kpiAction">--</div><small>行動型</small></div>
+        <div class="kpi"><div class="val" id="kpiAvoid">--</div><small>回避型スコア</small></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>このタイプの強み</h2>
+        <ul class="list">
+          <li>状況から一歩離れて<b>クールダウン</b>できる。</li>
+          <li>睡眠や休息、呼吸など<b>回復スキル</b>を優先できる。</li>
+          <li>落ち着きを取り戻してから<b>効率よく再始動</b>できる。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>つまずきやすい点</h2>
+        <ul class="list">
+          <li>休みが<b>先延ばし</b>に変わると課題が積み上がる。</li>
+          <li><b>回復だけ</b>に偏り、問題解決に移行しづらい。</li>
+          <li>刺激を避けすぎて<b>社会的つながり</b>が薄くなることも。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>おすすめコーピング（即効）</h2>
+        <ul class="list">
+          <li><b>4-6呼吸</b>（4秒吸って6秒吐く×8〜12呼吸）。</li>
+          <li><b>ホット&コールド</b>（入浴→冷水シャワー10〜20秒）。</li>
+          <li><b>リラクゼーション・メニュー</b>（音・香り・触感を1つずつ）。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>整えるコーピング（継続）</h2>
+        <ul class="list">
+          <li><b>睡眠ルーティン</b>（就寝・起床時刻/画面遮断/光/温度）。</li>
+          <li><b>予定化された休息</b>（毎日15分・週末90分のメンテ）。</li>
+          <li><b>段階的再始動</b>（休息→5分タスク→10分計画→25分集中）。</li>
+          <li><b>支援のあて先</b>を用意（困ったら誰に何を頼むか）。</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" id="scoreSection" hidden>
+      <h2>あなたのコーピング傾向（参考）</h2>
+      <div class="bars">
+        <div class="bar"><div class="lab">問題焦点</div><div class="track"><div class="fill" id="bPROBLEM"></div></div></div>
+        <div class="bar"><div class="lab">認知的再評価</div><div class="track"><div class="fill" id="bREAPPRAISAL"></div></div></div>
+        <div class="bar"><div class="lab">情動処理</div><div class="track"><div class="fill" id="bEMOTION"></div></div></div>
+        <div class="bar"><div class="lab">社会的支援</div><div class="track"><div class="fill" id="bSUPPORT"></div></div></div>
+        <div class="bar"><div class="lab">気晴らし</div><div class="track"><div class="fill" id="bDISTRACT"></div></div></div>
+        <div class="bar"><div class="lab">リラクゼーション</div><div class="track"><div class="fill" id="bRELAX"></div></div></div>
+      </div>
+      <p class="lead" style="margin-top:10px">※ スコアは診断時に保存された場合のみ表示されます。</p>
+    </section>
+
+    <footer>© 6StressTypes</footer>
+  </div>
+
+  <script>
+  // localStorage から診断結果を読み込み
+  const typeScores = safeJson(localStorage.getItem('stress:typeScores'));
+  const copingScores = safeJson(localStorage.getItem('stress:copingScores'));
+
+  if(typeScores){
+    const box = document.getElementById('kpiBox');
+    box.hidden = false;
+    setText('kpiThought', typeScores.THOUGHT);
+    setText('kpiEmotion', typeScores.EMOTION);
+    setText('kpiAction',  typeScores.ACTION);
+    setText('kpiAvoid',   typeScores.AVOID);
+  }
+  if(copingScores){
+    const sec = document.getElementById('scoreSection');
+    sec.hidden = false;
+    const max = Math.max(1, ...Object.values(copingScores));
+    for(const k of ['PROBLEM','REAPPRAISAL','EMOTION','SUPPORT','DISTRACT','RELAX']){
+      const el = document.getElementById('b'+k);
+      if(el){ el.style.width = ((copingScores[k]/max)*100).toFixed(0)+'%'; }
+    }
+  }
+
+  document.getElementById('retryBtn').addEventListener('click', ()=>{
+    window.location.href = 'stress-quiz-30q.html';
+  });
+  document.getElementById('shareBtn').addEventListener('click', async ()=>{
+    const shareData = {
+      title: 'ストレス診断 結果',
+      text: '私のタイプは回避型（AVOID）でした。',
+      url: location.href
+    };
+    try{
+      if(navigator.share){ await navigator.share(shareData); }
+      else { await navigator.clipboard.writeText(shareData.text+' '+shareData.url); alert('結果リンクをコピーしました'); }
+    }catch(e){ console.log(e); }
+  });
+
+  function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent = v; }
+  function safeJson(s){ try{ return s? JSON.parse(s): null }catch(e){ return null } }
+  </script>
+</body>
+</html>
