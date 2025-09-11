@@ -1,0 +1,4 @@
+
+User-agent: *
+Allow: /
+Sitemap: https://gilded-gumption-c3ea4b.netlify.app/sitemap.xml
