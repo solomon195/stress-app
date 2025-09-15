@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>記事一覧 | ストレス診断テスト</title>
+  <title>記事一覧 | 4stresstype</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root { --brand:#4f46e5; --text:#374151; --bg:#f4f5f7; --card:#fff; --muted:#6b7280; }
@@ -11,13 +11,11 @@
     body { font-family:'Noto Sans JP',sans-serif; background:var(--bg); margin:0; color:var(--text); }
     header { background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:50; }
     .navbar { display:flex; justify-content:space-between; align-items:center; padding:16px 32px; max-width:1200px; margin:0 auto; }
-    .logo { font-weight:700; font-size:20px; color:#4f46e5; text-decoration:none; }
+    .logo { font-weight:700; font-size:20px; color:var(--brand); text-decoration:none; }
     .nav-links { display:flex; gap:24px; align-items:center; }
     .nav-links a { text-decoration:none; color:#1f2937; font-size:14px; }
     .nav-links a.active { color:var(--brand); font-weight:700; }
     .nav-links a:hover { color:var(--brand); }
-    .nav-actions { display:flex; gap:16px; align-items:center; }
-    .nav-actions a { color:#1f2937; text-decoration:none; font-size:14px; }
 
     .wrap { max-width:1100px; margin:32px auto; padding:0 20px; }
     .hero { margin:16px 0 12px; }
@@ -45,17 +43,10 @@
 <body>
   <header>
     <nav class="navbar">
-      <a class="logo" href="index.html">16Personalities</a>
+      <a class="logo" href="index.html">4stresstype</a>
       <div class="nav-links">
-        <a href="index.html#">ストレス診断テスト</a>
-        <a href="index.html#">ストレスタイプ</a>
-        <a href="index.html#">キャリアキット</a>
-        <a href="index.html#">ビジネス</a>
+        <a href="index.html">ストレス診断テスト</a>
         <a class="active" href="kiji.html">記事</a>
-      </div>
-      <div class="nav-actions" id="nav-actions">
-        <a href="Login.html">ログイン</a>
-        <span>🇯🇵</span>
       </div>
     </nav>
   </header>
@@ -86,40 +77,7 @@
     </section>
   </main>
 
-  <footer>© 2025 ストレス診断 by あなたの名前</footer>
-
-  <!-- Firebase（ログイン状態表示用） -->
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyADxv-uF7qfCohDrM7M6GHYIg8dgXRDFuw",
-      authDomain: "new-stress.firebaseapp.com",
-      projectId: "new-stress",
-      storageBucket: "new-stress.appspot.com",
-      messagingSenderId: "69761646862",
-      appId: "1:69761646862:web:3eaec69feb21efc14c575f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    const navActions = document.getElementById('nav-actions');
-    function renderLoggedOut(){ 
-      navActions.innerHTML=''; 
-      const a=document.createElement('a'); a.href='Login.html'; a.textContent='ログイン'; 
-      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px'; 
-      navActions.appendChild(a); navActions.appendChild(l); 
-    }
-    function renderLoggedIn(user){ 
-      navActions.innerHTML=''; 
-      const n=document.createElement('span'); n.textContent=(user.displayName||user.email)+' さん'; n.style.marginRight='12px'; 
-      const lo=document.createElement('a'); lo.href='#'; lo.textContent='ログアウト'; 
-      lo.addEventListener('click',async(e)=>{e.preventDefault(); await auth.signOut();}); 
-      const l=document.createElement('span'); l.textContent='🇯🇵'; l.style.marginLeft='12px'; 
-      navActions.appendChild(n); navActions.appendChild(lo); navActions.appendChild(l); 
-    }
-    auth.onAuthStateChanged(u=>u?renderLoggedIn(u):renderLoggedOut());
-  </script>
+  <footer>© 2025 ストレス診断</footer>
 
   <script>
     // ▼ 記事データ（各記事のH1/リードに沿った見出し・抜粋）
@@ -182,16 +140,16 @@
 
     function render(items){
       list.innerHTML = '';
-      if (!items.length){ 
-        list.innerHTML = '<p style="color:var(--muted)">該当する記事が見つかりませんでした。</p>'; 
-        return; 
+      if (!items.length){
+        list.innerHTML = '<p style="color:var(--muted)">該当する記事が見つかりませんでした。</p>';
+        return;
       }
       items.forEach(a=>{
         const card = document.createElement('article');
         card.className = 'card';
 
         // サムネイル
-        const th = document.createElement('div'); 
+        const th = document.createElement('div');
         th.className='thumb';
         const img = document.createElement('img');
         img.loading = 'lazy';
@@ -203,18 +161,18 @@
         img.onerror = () => { img.src = 'sumbnail/stresspicture.jpg'; };
         th.appendChild(img);
 
-        const body = document.createElement('div'); 
+        const body = document.createElement('div');
         body.className='card-body';
-        const meta = document.createElement('div'); 
-        meta.className='meta'; 
+        const meta = document.createElement('div');
+        meta.className='meta';
         meta.textContent = `${a.cat} ・ ${a.date}`;
-        const h3 = document.createElement('h3'); 
-        h3.className='title'; 
+        const h3 = document.createElement('h3');
+        h3.className='title';
         h3.textContent = a.title;
-        const ex = document.createElement('p'); 
-        ex.className='excerpt'; 
+        const ex = document.createElement('p');
+        ex.className='excerpt';
         ex.textContent = a.excerpt;
-        const more = document.createElement('div'); 
+        const more = document.createElement('div');
         more.className='more';
 
         // 記事IDに応じて kiji{id}.html へ遷移（左上→右下の並びで kiji1〜6）
@@ -224,11 +182,11 @@
 
         more.appendChild(link);
 
-        body.appendChild(meta); 
-        body.appendChild(h3); 
+        body.appendChild(meta);
+        body.appendChild(h3);
         body.appendChild(ex);
-        card.appendChild(th); 
-        card.appendChild(body); 
+        card.appendChild(th);
+        card.appendChild(body);
         card.appendChild(more);
         list.appendChild(card);
       });

@@ -4,201 +4,359 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>結果｜行動型（ストレス対処）</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    /* =========================
+       Design Tokens
+       ========================= */
     :root{
-      --bg:#f4f5f7; --text:#111827; --muted:#6b7280; --card:#fff; --brand:#4f46e5;
-      --line:#e5e7eb;
+      --bg:#fffaf5; --text:#0f172a; --muted:#6b7280; --card:#ffffff;
+      --brand:#fb923c; /* energetic orange */
+      --brand-600:#f97316;
+      --brand-700:#ea580c;
+      --brand-50:#fff3e6; --brand-100:#ffe8d1; --brand-200:#ffd7b0;
+      --line:#efe7df;
+      --indigo:#6366f1; --green:#10b981;
+      --radius-lg:20px; --radius-md:14px;
+      --shadow-sm:0 2px 10px rgba(15,23,42,.06);
+      --shadow-md:0 10px 28px rgba(15,23,42,.08);
+      --shadow-lg:0 22px 56px rgba(15,23,42,.12);
+      --content-w:1000px;
     }
+
     *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans JP",system-ui,-apple-system}
-
-    /* ===== Top visual ===== */
-    .top-hero{
-      background: radial-gradient(1200px 400px at 50% -100px, #fff7e6 10%, #fffaf0 40%, #fffdf7 75%);
-      border-bottom:1px solid var(--line);
+    html,body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:"Noto Sans JP","Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     }
-    .top-hero .inner{
-      max-width:1060px;margin:0 auto;padding:28px 16px 18px;
-      display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;
-    }
-    .top-hero img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 18px rgba(79,70,229,.25))}
-    .top-hero h1{
-      margin:0;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.15;font-weight:800;letter-spacing:.02em;color:#1f2937;
-    }
-    .top-hero .sub{margin-top:6px;color:var(--muted);font-weight:600}
-
-    .wrap{max-width:960px;margin:0 auto;padding:24px 16px}
-    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
-    .brand{font-weight:700;color:var(--brand)}
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{padding:10px 14px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-weight:600;cursor:pointer}
-    .btn.secondary{background:#e5e7eb;color:#111827}
-
-    .hero{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(0,0,0,.05);display:grid;grid-template-columns:1fr;gap:14px}
-    .title{display:flex;align-items:center;gap:10px}
-    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.85rem}
+    h1,h2{letter-spacing:.2px}
+    p{line-height:1.9}
     .lead{color:var(--muted)}
+    a{color:inherit; text-decoration:none}
 
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-    .card{background:var(--card);border-radius:16px;padding:18px 18px;box-shadow:0 10px 25px rgba(0,0,0,.05)}
-    h2{font-size:1.05rem;margin:0 0 10px}
-
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    .kpi{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
-    .kpi .val{font-size:1.1rem;font-weight:700}
-    .kpi small{color:var(--muted)}
-
-    .bars{display:grid;gap:10px}
-    .bar{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:10px}
-    .bar .lab{color:var(--muted)}
-    .bar .track{height:12px;background:#eef2ff;border-radius:999px;overflow:hidden}
-    .bar .fill{height:100%;background:var(--brand);width:0}
-
-    .list{display:grid;gap:8px;color:#111827}
-    .list li{line-height:1.7}
-
-    footer{margin-top:18px;color:var(--muted);font-size:.8rem;text-align:center}
-
-    @media(max-width:900px){
-      .grid{grid-template-columns:1fr}
-      .kpis{grid-template-columns:repeat(2,1fr)}
-      .top-hero .inner{grid-template-columns:84px 1fr}
+    /* =========================
+       Full-bleed Hero with lines
+       ========================= */
+    .hero-bleed{
+      position:relative; overflow:hidden; border-bottom:1px solid var(--line);
+      background:
+        radial-gradient(1400px 520px at 50% -240px, var(--brand-50) 10%, var(--brand-100) 48%, #fff 85%);
     }
+    /* line pattern to edges */
+    .hero-bleed::before{
+      content:""; position:absolute; inset:0;
+      background-image:
+        linear-gradient(to right, rgba(251,146,60,.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(251,146,60,.08) 1px, transparent 1px);
+      background-size: 48px 48px, 48px 48px;
+      pointer-events:none;
+    }
+    /* dynamic orange band */
+    .hero-bleed::after{
+      content:""; position:absolute; left:-10%; right:-10%; bottom:-30px; height:360px;
+      background:linear-gradient(90deg, var(--brand), var(--brand-700));
+      clip-path:polygon(0 68%, 10% 62%, 22% 74%, 36% 60%, 52% 78%, 68% 58%, 84% 72%, 100% 64%, 100% 100%, 0 100%);
+      opacity:.16; filter:blur(6px);
+    }
+    .hero-inner{
+      position:relative; z-index:1;
+      max-width:var(--content-w); margin:0 auto; padding:32px 16px 26px;
+      display:grid; grid-template-columns:140px 1fr; gap:20px; align-items:center;
+    }
+    .hero-icon{
+      width:100%; height:auto; display:block;
+      filter:drop-shadow(0 14px 30px rgba(250,120,20,.28));
+      transform:translateY(2px);
+      transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .hero-icon:hover{ transform:translateY(-4px) }
+    .eyebrow{
+      display:inline-block; background:#fff; color:var(--brand-700);
+      font-weight:800; padding:8px 12px; border-radius:999px; box-shadow:var(--shadow-sm);
+      margin-bottom:10px; letter-spacing:.06em;
+    }
+    h1.title{
+      margin:0; font-size:clamp(28px,4.2vw,46px); line-height:1.12; font-weight:800;
+      color:#101827;
+    }
+    .subtitle{
+      margin-top:8px; color:#7a6a5a; font-weight:700;
+    }
+
+    /* =========================
+       Body container / Header
+       ========================= */
+    .wrap{max-width:var(--content-w); margin:0 auto; padding:26px 16px}
+    header.topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px}
+    .brand{font-weight:800; color:var(--brand-700); letter-spacing:.3px}
+    .btn{
+      padding:10px 14px; border:none; border-radius:12px; background:var(--brand-600);
+      color:#fff; font-weight:800; cursor:pointer; box-shadow:var(--shadow-sm);
+      transition:transform .06s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md) }
+
+    /* =========================
+       Cards & Sections
+       ========================= */
+    .section{margin-top:22px}
+    .card{
+      background:linear-gradient(180deg, #fff, color-mix(in oklab, #fff, var(--brand-50) 10%));
+      border:1px solid var(--line); border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-md); padding:20px;
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+
+    .title-row{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px;
+      background:var(--brand-100); color:#7a3d0e; font-weight:800; font-size:.9rem;
+      border:1px solid color-mix(in oklab, var(--brand-200), #fff 40%);
+    }
+    h2.sec{margin:.2rem 0 .6rem; font-size:1.18rem; font-weight:800; color:#0f172a; position:relative}
+    h2.sec::after{
+      content:""; position:absolute; left:0; bottom:-8px; width:70px; height:3px;
+      background:linear-gradient(90deg, var(--brand), transparent 70%); border-radius:999px; opacity:.9;
+    }
+
+    /* grid layouts */
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    @media(max-width:980px){ .grid-2,.grid-3{grid-template-columns:1fr} .hero-inner{grid-template-columns:110px 1fr} }
+
+    /* lists with custom markers */
+    .list{display:grid; gap:10px; padding-left:0; margin:0}
+    .list li{list-style:none; line-height:1.85; position:relative; padding-left:28px}
+    .list li::before{
+      content:""; position:absolute; left:0; top:.68em; width:16px; height:16px; border-radius:6px;
+      background:
+        radial-gradient(5px 5px at 5px 5px, #fff 55%, transparent),
+        linear-gradient(135deg, var(--brand), var(--brand-700));
+      box-shadow:0 2px 6px rgba(250,120,20,.3);
+    }
+
+    /* tip box */
+    .tip{
+      border-left:4px solid var(--green); padding:10px 12px;
+      background:color-mix(in oklab, #ecfdf5, #fff 40%);
+      border-radius:10px; color:#0a3d2f; box-shadow:var(--shadow-sm); margin-top:10px
+    }
+
+    footer{margin:28px 0 20px; color:var(--muted); font-size:.82rem; text-align:center}
   </style>
 </head>
 <body>
-  <!-- ===== TOP IMAGE & TITLE ===== -->
-  <section class="top-hero">
-    <div class="inner">
-      <!-- 透過PNG想定：/kekkagazo/kodo2.png -->
-      <img src="kekkagazo/kodo2.png" alt="行動タイプのキャラクター">
+
+  <!-- ============ HERO (full-bleed, lines to edges) ============ -->
+  <section class="hero-bleed">
+    <div class="hero-inner">
+      <img class="hero-icon" src="resultgazo/kodokekka1.png" alt="行動タイプのキャラクター">
       <div>
-        <h1>あなたは行動タイプ</h1>
-        <div class="sub">動いて整える、エネルギッシュなスイッチャー</div>
+        <span class="eyebrow">あなたの思考タイプ</span>
+        <h1 class="title">あなたは <span style="color:var(--brand-700)">行動タイプ</span></h1>
+        <div class="subtitle">動いて整える、エネルギッシュなスイッチャー</div>
       </div>
     </div>
   </section>
 
+  <!-- ============ BODY ============ -->
   <div class="wrap">
-    <header>
-      <div class="brand">ストレス診断</div>
-      <div class="actions">
-        <button class="btn" id="retryBtn">もう一度診断</button>
-        <button class="btn secondary" id="shareBtn">結果をシェア</button>
-      </div>
+    <header class="topbar">
+      <div class="brand">6StressTypes</div>
+      <button class="btn" id="retryBtn">もう一度診断</button>
     </header>
 
-    <section class="hero">
-      <div class="title">
-        <span class="badge">あなたのタイプ</span>
-        <h2 style="margin:0">行動型（ACTION）</h2>
+    <!-- 概要 -->
+    <section class="section card">
+      <div class="title-row">
+        <span class="badge">タイプ概要</span>
+        <h2 class="sec">行動型（ACTION）とは</h2>
       </div>
-      <p class="lead">まず<b>動いて整える</b>タイプ。短時間のアクションや環境切り替えで気分と状況を変えるのが得意。診断上は主に<b>気晴らし型</b>コーピングが強く出やすいタイプです。</p>
-      <div class="kpis" id="kpiBox" hidden>
-        <div class="kpi"><div class="val" id="kpiThought">--</div><small>思考型</small></div>
-        <div class="kpi"><div class="val" id="kpiEmotion">--</div><small>感情型</small></div>
-        <div class="kpi"><div class="val" id="kpiAction">--</div><small>行動型スコア</small></div>
-        <div class="kpi"><div class="val" id="kpiAvoid">--</div><small>回避型</small></div>
+      <p class="lead">
+        ストレスを感じたら<b>まず動いてスイッチ</b>。短い運動や環境チェンジで気分を切り替え、勢いをつけて前進するタイプ。
+        気晴らし・行動活性化・環境調整をうまく使い、停滞を突破するのが得意です。
+      </p>
+      <div class="list" style="grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:8px">
+        <div class="badge" style="justify-content:center;background:var(--brand-50)">瞬発力</div>
+        <div class="badge" style="justify-content:center;background:var(--brand-50)">切替のうまさ</div>
+        <div class="badge" style="justify-content:center;background:var(--brand-50)">体感で掴む</div>
       </div>
     </section>
 
-    <div class="grid">
-      <section class="card">
-        <h2>このタイプの強み</h2>
+    <!-- 強み / 弱み -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2 class="sec">強み</h2>
         <ul class="list">
-          <li><b>行動開始</b>が早く、停滞から抜け出すのが得意。</li>
-          <li><b>環境スイッチ</b>（場所・姿勢・タスク切替）で気分を立て直せる。</li>
-          <li>身体を動かす<b>行動活性化</b>で集中・動機づけを回復できる。</li>
+          <li><b>着手が速い</b>：停滞から抜け出す初動が得意。</li>
+          <li><b>環境スイッチ</b>：場所・姿勢・タスクの切替で集中を回復。</li>
+          <li><b>行動活性化</b>：体を動かし動機づけと気分を上げる。</li>
         </ul>
-      </section>
-
-      <section class="card">
-        <h2>つまずきやすい点</h2>
-        <ul class="list">
-          <li>気晴らしが<b>逃避</b>に傾くと、根本課題が後回しに。</li>
-          <li>衝動的に<b>やりすぎ</b>て疲弊したり、継続性が落ちやすい。</li>
-          <li>短期の切替ばかりで<b>計画</b>や<b>再評価</b>が不足しやすい。</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>おすすめコーピング（即効）</h2>
-        <ul class="list">
-          <li><b>2分ルール</b>（2分で出来る行動を今すぐ着手）。</li>
-          <li><b>5〜15分ウォーク</b> or スクワット/ストレッチでスイッチ。</li>
-          <li><b>環境チェンジ</b>（席替え/カフェ/図書館）で再集中。</li>
-          <li><b>25-5</b>（25分集中＋5分休憩のポモドーロを1セット）。</li>
-        </ul>
-      </section>
-
-      <section class="card">
-        <h2>整えるコーピング（継続）</h2>
-        <ul class="list">
-          <li>行動を<b>習慣連結</b>（歯磨き→ストレッチ→1分計画）。</li>
-          <li><b>ウィークリープラン</b>で気晴らしと課題対応の<b>比率</b>を決める。</li>
-          <li>デジタル<b>通知ダイエット</b>（アプリの通知を必要最小限）。</li>
-          <li>週1回は<b>振り返り</b>（何が効いた/効かなかった？次は？）。</li>
-        </ul>
-      </section>
-    </div>
-
-    <section class="card" id="scoreSection" hidden>
-      <h2>あなたのコーピング傾向（参考）</h2>
-      <div class="bars">
-        <div class="bar"><div class="lab">問題焦点</div><div class="track"><div class="fill" id="bPROBLEM"></div></div></div>
-        <div class="bar"><div class="lab">認知的再評価</div><div class="track"><div class="fill" id="bREAPPRAISAL"></div></div></div>
-        <div class="bar"><div class="lab">情動処理</div><div class="track"><div class="fill" id="bEMOTION"></div></div></div>
-        <div class="bar"><div class="lab">社会的支援</div><div class="track"><div class="fill" id="bSUPPORT"></div></div></div>
-        <div class="bar"><div class="lab">気晴らし</div><div class="track"><div class="fill" id="bDISTRACT"></div></div></div>
-        <div class="bar"><div class="lab">リラクゼーション</div><div class="track"><div class="fill" id="bRELAX"></div></div></div>
       </div>
-      <p class="lead" style="margin-top:10px">※ スコアは診断時に保存された場合のみ表示されます。</p>
+      <div class="card">
+        <h2 class="sec">つまずきやすい点</h2>
+        <ul class="list">
+          <li><b>衝動的</b>：考える前に動きすぎて空回り。</li>
+          <li><b>逃避化</b>：気晴らしが課題の先延ばしになる。</li>
+          <li><b>計画不足</b>：短期の切替ばかりで再評価が足りない。</li>
+        </ul>
+        <div class="tip">合言葉：<b>「小さく動いて、短く振り返る」</b>（行動→30秒レビュー）。</div>
+      </div>
+    </section>
+
+    <!-- トリガー / サイン -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2 class="sec">ストレスが増えるトリガー</h2>
+        <ul class="list">
+          <li>裁量が少ない・動けない環境</li>
+          <li>長時間の座り作業・単調ルーチン</li>
+          <li>曖昧な指示で何をすべきか不明</li>
+          <li>休めない／運動不足が続く</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="sec">出やすいサイン</h2>
+        <ul class="list">
+          <li>ソワソワして落ち着かない・中途半端に手を出す</li>
+          <li>突然の掃除・模様替え・衝動買い</li>
+          <li>スマホ多動（アプリ渡り歩き）</li>
+          <li>「とりあえずやる！」が増え、疲労が溜まる</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- コーピング：即効 / 継続 -->
+    <section class="section grid-2">
+      <div class="card">
+        <div class="title-row">
+          <span class="badge">実践（短期）</span>
+          <h2 class="sec">おすすめコーピング（今すぐ）</h2>
+        </div>
+        <ul class="list">
+          <li><b>2分ルール</b>：2分でできる行動を即スタート。</li>
+          <li><b>5–15分ウォーク</b> or スクワット/ストレッチ。</li>
+          <li><b>環境チェンジ</b>：席替え／カフェ／図書館で再集中。</li>
+          <li><b>25–5</b>：25分集中＋5分休憩のポモドーロ1セット。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="title-row">
+          <span class="badge">実践（中長期）</span>
+          <h2 class="sec">整えるコーピング（継続）</h2>
+        </div>
+        <ul class="list">
+          <li><b>習慣連結</b>：歯磨き→ストレッチ→1分計画。</li>
+          <li><b>比率設計</b>：気晴らし:課題対応＝2:8など週で配分。</li>
+          <li><b>通知ダイエット</b>：アプリ通知は必要最小限に。</li>
+          <li><b>週次レビュー</b>：効いた/効かない→次の一手を決める。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- シーン別 -->
+    <section class="section">
+      <div class="card">
+        <div class="title-row">
+          <span class="badge">シーン別</span>
+          <h2 class="sec">日常での振る舞いヒント</h2>
+        </div>
+        <div class="grid-3">
+          <div>
+            <h3 style="margin:.3rem 0 .4rem; font-weight:800; color:#7a3d0e">職場</h3>
+            <ul class="list">
+              <li><b>現場優先</b>：まず小さく試す→結果で語る。</li>
+              <li>会議は<b>決め方を先に決める</b>＋役割分担。</li>
+              <li>午後イチに<b>外気浴5分</b>で脳をリセット。</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin:.3rem 0 .4rem; font-weight:800; color:#7a3d0e">恋愛/家族</h3>
+            <ul class="list">
+              <li>デートは<b>体験重視</b>（散歩・ドライブ・イベント）。</li>
+              <li>衝突時は<b>10分クールダウン→合流</b>の合図。</li>
+              <li><b>家事スプリント</b>：15分で一緒に片づけて達成感。</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin:.3rem 0 .4rem; font-weight:800; color:#7a3d0e">学習/自己成長</h3>
+            <ul class="list">
+              <li><b>手を動かす</b>：まず1問解く/1分話す/1行書く。</li>
+              <li>難所は<b>伴走者</b>と作業会・タイムトライアル。</li>
+              <li>ご褒美で<b>ゲーム化</b>（達成→ミニご褒美）。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Identity A/T -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2 class="sec">自信型（A）寄りの調整</h2>
+        <ul class="list">
+          <li><b>過信チェック</b>：他者レビューを定例化。</li>
+          <li><b>休息の先取り</b>：カレンダーに“オフ”を予約。</li>
+          <li><b>兆候メモ</b>：疲労サイン（眠気/肩こり）を見逃さない。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="sec">不安型（T）寄りの調整</h2>
+        <ul class="list">
+          <li><b>5分だけ</b>ルールで着手ハードルを下げる。</li>
+          <li><b>Doneリスト</b>で小さな勝ちを可視化。</li>
+          <li>反芻は<b>タイマー5分</b>で区切って行動に戻る。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 1週間プラン / Do Don't -->
+    <section class="section grid-2">
+      <div class="card">
+        <h2 class="sec">1週間の整えプラン</h2>
+        <ul class="list">
+          <li><b>月</b>：朝ひなた散歩10分→週のギアを入れる。</li>
+          <li><b>火</b>：仕事後に軽運動20分（音楽OK）。</li>
+          <li><b>水</b>：平日ハイライト（映画/友人/趣味）。</li>
+          <li><b>木</b>：おうちケア（入浴＋ストレッチ15分）。</li>
+          <li><b>金</b>：遠回りウォークでクールダウン。</li>
+          <li><b>土</b>：自然×アクティビティで発散。</li>
+          <li><b>日</b>：30分だけ週計画→早寝。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="sec">Do / Don’t</h2>
+        <ul class="list">
+          <li><b>Do：</b>小さく動く→短く振り返る。</li>
+          <li><b>Do：</b>気晴らしは時間と回数を決める。</li>
+          <li><b>Do：</b>環境と身体にテコ入れ（姿勢/光/温度）。</li>
+          <li><b>Don’t：</b>衝動で暴走（買い物/暴飲食/無理な約束）。</li>
+          <li><b>Don’t：</b>「自分だけで何とかする」と抱え込む。</li>
+          <li><b>Don’t：</b>休まず走り続ける（休むのも行動）。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 総括 -->
+    <section class="section card">
+      <div class="title-row">
+        <span class="badge">総括</span>
+        <h2 class="sec">動けることは、折れない強さになる</h2>
+      </div>
+      <p class="lead">
+        あなたの初動の速さと切替のうまさは、停滞をほどく推進力。<b>小さく動き、短く振り返る</b>を合言葉に、
+        休息と再評価を織り込めば、行動力は<b>周囲を前に進めるリーダーシップ</b>へ進化します。
+      </p>
     </section>
 
     <footer>© 6StressTypes</footer>
   </div>
 
   <script>
-  // localStorage から診断結果を読み込み
-  const typeScores = safeJson(localStorage.getItem('stress:typeScores'));
-  const copingScores = safeJson(localStorage.getItem('stress:copingScores'));
-
-  if(typeScores){
-    const box = document.getElementById('kpiBox');
-    box.hidden = false;
-    setText('kpiThought', typeScores.THOUGHT);
-    setText('kpiEmotion', typeScores.EMOTION);
-    setText('kpiAction',  typeScores.ACTION);
-    setText('kpiAvoid',   typeScores.AVOID);
-  }
-  if(copingScores){
-    const sec = document.getElementById('scoreSection');
-    sec.hidden = false;
-    const max = Math.max(1, ...Object.values(copingScores));
-    for(const k of ['PROBLEM','REAPPRAISAL','EMOTION','SUPPORT','DISTRACT','RELAX']){
-      const el = document.getElementById('b'+k);
-      if(el){ el.style.width = ((copingScores[k]/max)*100).toFixed(0)+'%'; }
-    }
-  }
-
-  document.getElementById('retryBtn').addEventListener('click', ()=>{
-    window.location.href = 'stress-quiz-30q.html';
-  });
-  document.getElementById('shareBtn').addEventListener('click', async ()=>{
-    const shareData = {
-      title: 'ストレス診断 結果',
-      text: '私のタイプは行動型（ACTION）でした。',
-      url: location.href
-    };
-    try{
-      if(navigator.share){ await navigator.share(shareData); }
-      else { await navigator.clipboard.writeText(shareData.text+' '+shareData.url); alert('結果リンクをコピーしました'); }
-    }catch(e){ console.log(e); }
-  });
-
-  function setText(id, v){ const el=document.getElementById(id); if(el) el.textContent = v; }
-  function safeJson(s){ try{ return s? JSON.parse(s): null }catch(e){ return null } }
+    document.getElementById('retryBtn')?.addEventListener('click', ()=>{ location.href = 'stress-quiz-30q.html'; });
   </script>
 </body>
 </html>
